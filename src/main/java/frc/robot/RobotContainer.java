@@ -55,6 +55,10 @@ public class RobotContainer {
     final Trigger BrakeOff = m_driverCtrl.square();
     BrakeOff.onTrue(new InstantCommand(drivetrain::BrakeOff, drivetrain));
 
+    ////////////////////////// CODRIVER COMMANDS //////////////////////////
+
+    final Trigger setGoal 
+
   }
 
   public Command getAutonomousCommand() {
