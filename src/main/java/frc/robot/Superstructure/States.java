@@ -3,12 +3,13 @@ package frc.robot.Superstructure;
 public enum States {
     Home,
     TopScoreCube,
-    TopSCoreCone,
+    TopScoreCone,
     MidScoreCube,
     MidScoreCone,
     LowPortal,
     HighPortal,
     Ground,
-    Manual,
+    Intermediate,
+    PreIntermediate,
     Nothing
 }

@@ -5,6 +5,12 @@
 package frc.robot.Constants;
 
 import frc.lib.util.Gains;
+import frc.robot.Superstructure.States;
+
+import com.google.common.collect.RangeSet;
+import com.google.common.collect.TreeRangeMap;
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeMap;
 
 public final class SC {
 
@@ -47,7 +53,7 @@ public final class SC {
         public static final double kd = 0;
         public static final double kff = 0;
         public static final double kIz = 0; */ 
-        public static final double tolerance = 10;//in degrees
+        public static final double tolerance = 5;//in degrees
         public static final double maxOutput = 1;
         public static final double minOutput = -1;
 
@@ -73,18 +79,38 @@ public final class SC {
     public static class PresetPositions{
         /* {Should_angle, Elbow_angle} */
         public static final double[] Home = {0.0,0.0};
-        public static final double[] coDriverMode = {0.0,0.0};
-        public static final double[] ExtendOut = {51.0,0.0};
-        public static final double[] ExtendIn = {51.0,0.0};
+        public static final double[] Intermediate = {51.0, 0.0};
         public static final double[] PreExtractIn = {149.3,-41};
         public static final double[] MidScoreCube = {61.9,-12.2};
         public static final double[] HighScoreCube = {163.5, -161.4};
         public static final double[] HighScoreCone = {185.5, -188.4};
         public static final double[] MidScoreCone = {122.9 , -123.5};
         public static final double[] Ground = {39.8,-88.2};
+
         
-        public static final double[] elbowPositions = {Home[1], coDriverMode[1], ExtendOut[1], ExtendIn[1], PreExtractIn[1], MidScoreCube[1], HighScoreCube[1], HighScoreCone[1], MidScoreCone[1], Ground[1]};
-        public static final double[] shoulderPositions = {Home[0], coDriverMode[0], ExtendOut[0], ExtendIn[0], PreExtractIn[0], MidScoreCube[0], HighScoreCube[0], HighScoreCone[0], MidScoreCone[0], Ground[0]};
+        public static final RangeMap<Double, States> elbowRange = TreeRangeMap.create();
+        public static final RangeMap<Double, States> shoulderRange = TreeRangeMap.create();
+
+        public void applyRange(){
+
+            elbowRange.put(Range.closed(Home[1] - SC.Elbow.tolerance, Home[1] + SC.Elbow.tolerance), States.Home);
+            elbowRange.put(Range.closed(Intermediate[1] - SC.Elbow.tolerance, Intermediate[1] + SC.Elbow.tolerance), States.Intermediate);
+            elbowRange.put(Range.closed(PreExtractIn[1] - SC.Elbow.tolerance, PreExtractIn[1] + SC.Elbow.tolerance), States.PreIntermediate);
+            elbowRange.put(Range.closed(MidScoreCube[1] - SC.Elbow.tolerance, MidScoreCube[1] + SC.Elbow.tolerance), States.MidScoreCube);
+            elbowRange.put(Range.closed(MidScoreCone[1] - SC.Elbow.tolerance, MidScoreCone[1] + SC.Elbow.tolerance), States.MidScoreCone);
+            elbowRange.put(Range.closed(HighScoreCube[1] - SC.Elbow.tolerance, HighScoreCube[1] + SC.Elbow.tolerance), States.TopScoreCube);
+            elbowRange.put(Range.closed(HighScoreCone[1] - SC.Elbow.tolerance, HighScoreCone[1] + SC.Elbow.tolerance), States.TopScoreCone);
+            elbowRange.put(Range.closed(Ground[1] - SC.Elbow.tolerance, Ground[1] + SC.Elbow.tolerance), States.Ground);
+
+            shoulderRange.put(Range.closed(Home[0] - SC.Shoulder.tolerance, Home[0] + SC.Shoulder.tolerance), States.Home);
+            shoulderRange.put(Range.closed(Intermediate[0] - SC.Shoulder.tolerance, Intermediate[0] + SC.Shoulder.tolerance), States.Intermediate);
+            shoulderRange.put(Range.closed(PreExtractIn[0] - SC.Shoulder.tolerance, PreExtractIn[0] + SC.Shoulder.tolerance), States.PreIntermediate);
+            shoulderRange.put(Range.closed(MidScoreCube[0] - SC.Shoulder.tolerance, MidScoreCube[0] + SC.Shoulder.tolerance), States.MidScoreCube);
+            shoulderRange.put(Range.closed(MidScoreCone[0] - SC.Shoulder.tolerance, MidScoreCone[0] + SC.Shoulder.tolerance), States.MidScoreCone);
+            shoulderRange.put(Range.closed(HighScoreCube[0] - SC.Shoulder.tolerance, HighScoreCube[0] + SC.Shoulder.tolerance), States.TopScoreCube);
+            shoulderRange.put(Range.closed(HighScoreCone[0] - SC.Shoulder.tolerance, HighScoreCone[0] + SC.Shoulder.tolerance), States.TopScoreCone);
+            shoulderRange.put(Range.closed(Ground[0] - SC.Shoulder.tolerance, Ground[0] + SC.Shoulder.tolerance), States.Ground);
+        }
     }
 
 }

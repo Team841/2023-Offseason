@@ -3,8 +3,8 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2023.4.2"
 }
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
@@ -48,6 +48,10 @@ def includeDesktopSupport = true
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
 dependencies {
+
+    // Guava
+    implementation("com.google.guava:guava:31.1-jre")
+
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 

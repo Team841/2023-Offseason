@@ -2,6 +2,7 @@ package frc.robot.Superstructure;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SC;
 import frc.lib.util.BioFalcon;
@@ -11,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.google.common.collect.RangeMap;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -18,6 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Superstructure extends SubsystemBase {
+
+  private CommandScheduler scheduler = CommandScheduler.getInstance();
 
   public final BioFalcon shoulderMotor_starboard = new BioFalcon(Constants.CANid.shoulderMotor_Starboard, false, false, SC.Shoulder.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
   public final BioFalcon shoulderMotor_port = new BioFalcon(Constants.CANid.shoulderMotor_Port, false, true, SC.Shoulder.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
@@ -39,6 +43,8 @@ public class Superstructure extends SubsystemBase {
 
   public boolean isInPreset = false;
 
+  public SC.PresetPositions rangePreset = new SC.PresetPositions();
+
   public Superstructure() {
 
     shoulderMotor_port.follow(shoulderMotor_starboard);
@@ -47,27 +53,51 @@ public class Superstructure extends SubsystemBase {
     IntakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
     IntakeMotor.setNeutralMode(NeutralMode.Brake);
 
+    rangePreset.applyRange();
   }
 
   @Override
   public void periodic() {
 
+    inTolerance(getJointAngles());
+
     if (state == States.Home){
       checkSensors();
     }
 
+    if (input != States.Nothing){
+      move();
+    }
     
   }
 
   ///////////////////////////////// Commands ///////////////////////////////
 
   public void setInput(States state){
-    this.state = state;
+    this.input = state;
+  }
+
+  public void move(){
+    if (input != States.Home && isInPreset){
+      switch (input){
+        case Ground -> {
+          if (input != States.TopScoreCone && input != States.TopScoreCube){
+            scheduler.schedule(moveGround());
+          } else {
+            scheduler.schedule(moveIntermediateAndPreExtractIn(), moveGround());
+          }
+        } 
+
+        default -> {
+          break;
+        }
+      }
+    }
   }
 
   public CommandBase moveGround(){
     return this.run(() -> 
-    setJointAngles(SC.PresetPositions.ExtendOut))
+    setJointAngles(SC.PresetPositions.Intermediate))
     .andThen(() -> setJointAngles(SC.PresetPositions.Ground))
     .handleInterrupt(() -> stopJoints())
     .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
@@ -75,7 +105,7 @@ public class Superstructure extends SubsystemBase {
 
   public CommandBase moveMidScoreCube(){
     return this.run(() -> 
-    setJointAngles(SC.PresetPositions.ExtendOut))
+    setJointAngles(SC.PresetPositions.Intermediate))
     .andThen(() -> setJointAngles(SC.PresetPositions.MidScoreCube))
     .handleInterrupt(() -> stopJoints())
     .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
@@ -83,7 +113,7 @@ public class Superstructure extends SubsystemBase {
 
   public CommandBase moveMidScoreCone(){
     return this.run(() -> 
-    setJointAngles(SC.PresetPositions.ExtendOut))
+    setJointAngles(SC.PresetPositions.Intermediate))
     .andThen(() -> setJointAngles(SC.PresetPositions.MidScoreCone))
     .handleInterrupt(() -> stopJoints())
     .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
@@ -91,7 +121,7 @@ public class Superstructure extends SubsystemBase {
 
   public CommandBase moveHighScoreCube(){
     return this.run(() -> 
-    setJointAngles(SC.PresetPositions.ExtendOut))
+    setJointAngles(SC.PresetPositions.Intermediate))
     .andThen(() -> setJointAngles(SC.PresetPositions.HighScoreCube))
     .handleInterrupt(() -> stopJoints())
     .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
@@ -99,11 +129,35 @@ public class Superstructure extends SubsystemBase {
 
   public CommandBase moveHighScoreCone(){
     return this.run(() ->
-    setJointAngles(SC.PresetPositions.ExtendOut))
+    setJointAngles(SC.PresetPositions.Intermediate))
     .andThen(() -> setJointAngles(SC.PresetPositions.HighScoreCone))
     .handleInterrupt(() -> stopJoints())
     .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
   }
+
+  public CommandBase moveHome(){
+    return this.run(() ->
+    setJointAngles(SC.PresetPositions.Intermediate))
+    .andThen(() -> setJointAngles(SC.PresetPositions.Home))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
+  public CommandBase moveIntermediateAndPreExtractIn(){
+    return this.run(() ->
+    setJointAngles(SC.PresetPositions.PreExtractIn))
+    .andThen(() -> setJointAngles(SC.PresetPositions.Intermediate))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
+  public CommandBase moveIntermediate(){
+    return this.run(() ->
+    setJointAngles(SC.PresetPositions.Intermediate))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
 
   ///////////////////////////////// End Commands ///////////////////////////////
 
@@ -222,7 +276,10 @@ public class Superstructure extends SubsystemBase {
   }
 
   public void inTolerance(double[] angles){
-    
+    if (SC.PresetPositions.elbowRange.get(angles[0]) == null || SC.PresetPositions.shoulderRange.get(angles[1]) == null){
+      isInPreset = false; return;
+    } 
+    isInPreset = true; return;
   }
 
   /////////////////////////////// End Periodic  ///////////////////////////////
