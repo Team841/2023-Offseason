@@ -57,7 +57,6 @@ public class RobotContainer {
 
     ////////////////////////// CODRIVER COMMANDS //////////////////////////
 
-    final Trigger setGoal 
 
   }
 

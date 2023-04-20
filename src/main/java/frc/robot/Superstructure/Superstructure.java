@@ -1,21 +1,17 @@
 package frc.robot.Superstructure;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SC;
-import frc.robot.Constants.SC.Intake;
 import frc.lib.util.BioFalcon;
 import frc.robot.Constants.Constants;
-
-import com.ctre.phoenix.motorcontrol.can.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced; 
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,6 +35,9 @@ public class Superstructure extends SubsystemBase {
   }
 
   private States state = States.Home;
+  private States input = States.Nothing;
+
+  public boolean isInPreset = false;
 
   public Superstructure() {
 
@@ -57,7 +56,7 @@ public class Superstructure extends SubsystemBase {
       checkSensors();
     }
 
-
+    
   }
 
   ///////////////////////////////// Commands ///////////////////////////////
@@ -66,6 +65,47 @@ public class Superstructure extends SubsystemBase {
     this.state = state;
   }
 
+  public CommandBase moveGround(){
+    return this.run(() -> 
+    setJointAngles(SC.PresetPositions.ExtendOut))
+    .andThen(() -> setJointAngles(SC.PresetPositions.Ground))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
+  public CommandBase moveMidScoreCube(){
+    return this.run(() -> 
+    setJointAngles(SC.PresetPositions.ExtendOut))
+    .andThen(() -> setJointAngles(SC.PresetPositions.MidScoreCube))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
+  public CommandBase moveMidScoreCone(){
+    return this.run(() -> 
+    setJointAngles(SC.PresetPositions.ExtendOut))
+    .andThen(() -> setJointAngles(SC.PresetPositions.MidScoreCone))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
+  public CommandBase moveHighScoreCube(){
+    return this.run(() -> 
+    setJointAngles(SC.PresetPositions.ExtendOut))
+    .andThen(() -> setJointAngles(SC.PresetPositions.HighScoreCube))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
+  public CommandBase moveHighScoreCone(){
+    return this.run(() ->
+    setJointAngles(SC.PresetPositions.ExtendOut))
+    .andThen(() -> setJointAngles(SC.PresetPositions.HighScoreCone))
+    .handleInterrupt(() -> stopJoints())
+    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+  }
+
+  ///////////////////////////////// End Commands ///////////////////////////////
 
   /////////////////////////////// Control Methods ///////////////////////////////
 
@@ -153,6 +193,13 @@ public class Superstructure extends SubsystemBase {
     return !ShoulderIndexSensor.get();
   }
 
+  public double[] getJointAngles(){
+    double[] angles = new double[2];
+    angles[0] = countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(), SC.Shoulder.GearRatio);
+    angles[1] = countsToAngle(elbowMotor.getSelectedSensorPosition(), SC.Elbow.GearRatio);
+    return angles;
+  }
+
   public States getState(){
     return this.state;
   }
@@ -174,5 +221,9 @@ public class Superstructure extends SubsystemBase {
     }
   }
 
+  public void inTolerance(double[] angles){
+    
+  }
 
+  /////////////////////////////// End Periodic  ///////////////////////////////
 }

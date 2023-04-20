@@ -78,12 +78,13 @@ public final class SC {
         public static final double[] ExtendIn = {51.0,0.0};
         public static final double[] PreExtractIn = {149.3,-41};
         public static final double[] MidScoreCube = {61.9,-12.2};
-        public static final double[] TopScoreCube = {163.5, -161.4};
-        public static final double[] TopSCoreCone = {185.5, -188.4};
+        public static final double[] HighScoreCube = {163.5, -161.4};
+        public static final double[] HighScoreCone = {185.5, -188.4};
         public static final double[] MidScoreCone = {122.9 , -123.5};
-        // public static final double[] GroundCone = {39.8,-75.2};
-        public static final double[] Ground = {39.8,-88.2};  
-        public static final double[] Pickup = {0.0,0.0};  //this isn't used
+        public static final double[] Ground = {39.8,-88.2};
+        
+        public static final double[] elbowPositions = {Home[1], coDriverMode[1], ExtendOut[1], ExtendIn[1], PreExtractIn[1], MidScoreCube[1], HighScoreCube[1], HighScoreCone[1], MidScoreCone[1], Ground[1]};
+        public static final double[] shoulderPositions = {Home[0], coDriverMode[0], ExtendOut[0], ExtendIn[0], PreExtractIn[0], MidScoreCube[0], HighScoreCube[0], HighScoreCone[0], MidScoreCone[0], Ground[0]};
     }
 
 }
