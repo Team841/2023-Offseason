@@ -16,115 +16,133 @@ public class SuperstructureFactory{
         this.superstructure = _superstructure;
     }
 
-    public CommandBase moveGround = Commands.sequence(
-      new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate))
-      .andThen(() -> new setJointAngles(superstructure ,SC.PresetPositions.Ground))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    public Command moveGround() {
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
+        new setJointAngles(this.superstructure, SC.PresetPositions.Ground))
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .handleInterrupt(() -> this.superstructure.stopJoints());
+    }
     
-    public CommandBase moveMidScoreCube = Commands.sequence(
-      new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.MidScoreCube))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-    
-    public CommandBase moveMidScoreCone = Commands.sequence(
-      new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.MidScoreCone))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    public Command moveMidScoreCube() {
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
+        new setJointAngles(this.superstructure, SC.PresetPositions.MidScoreCube))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
 
-    public CommandBase moveHighScoreCube= Commands.sequence(
-      new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.HighScoreCube))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-    
-    public CommandBase moveHighScoreCone = Commands.sequence(
-      new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.HighScoreCone))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    public CommandBase moveMidScoreCone() {
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
+        new setJointAngles(this.superstructure, SC.PresetPositions.MidScoreCone))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
+
+    public CommandBase moveHighScoreCube() {
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
+        new setJointAngles(this.superstructure, SC.PresetPositions.HighScoreCube))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
+
+    public CommandBase moveHighScoreCone() {
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
+        new setJointAngles(this.superstructure, SC.PresetPositions.HighScoreCone))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
       
-    public CommandBase moveHome = Commands.sequence(
-      new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.Home))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    public CommandBase moveHome() {
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
+        new setJointAngles(this.superstructure, SC.PresetPositions.Home))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
     
-    public CommandBase moveHomeFromHigh = Commands.sequence(
-      new setJointAngles(superstructure, SC.PresetPositions.PreExtractIn)
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.Home))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    public CommandBase moveHomeFromHigh() {
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.PreExtractIn),
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
+        new setJointAngles(this.superstructure, SC.PresetPositions.Home))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
       
-    public CommandBase moveIntermediateAndPreExtractIn = Commands.sequence( // Go to pre extract in and then intermediate
-      new setJointAngles(superstructure, SC.PresetPositions.PreExtractIn))
-      .andThen(() -> new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    public CommandBase moveIntermediateAndPreExtractIn() {  // Go to pre extract in and then intermediate
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.PreExtractIn),
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
         
-    public CommandBase moveIntermediate = Commands.sequence( // Go to Intermediate
-      new setJointAngles(superstructure, SC.PresetPositions.Intermediate))
-      .handleInterrupt(() -> superstructure.stopJoints())
-      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    public CommandBase moveIntermediate () { // Go to Intermediate
+      return new SequentialCommandGroup(
+        new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate))
+        .handleInterrupt(() -> this.superstructure.stopJoints())
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    }
 
-    public CommandBase toGround(){
-      if (superstructure.isInPreset() || superstructure.getState() == States.Home){
-        return moveGround;
+    public Command toGround(){
+      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        return moveGround();
       }
       else {
         return Commands.none();
       }
     }
 
-    public CommandBase toMidScoreCube(){
-      if (superstructure.isInPreset() || superstructure.getState() == States.Home){
-        return moveMidScoreCube;
+    public Command toMidScoreCube(){
+      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        return moveMidScoreCube();
       }
       else {
         return Commands.none();
       }
     }
 
-    public CommandBase toMidScoreCone(){
-      if (superstructure.isInPreset() || superstructure.getState() == States.Home){
-        return moveMidScoreCone;
+    public Command toMidScoreCone(){
+      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        return moveMidScoreCone();
       }
       else {
         return Commands.none();
       }
     }
 
-    public CommandBase toHighScoreCube(){
-      if (superstructure.isInPreset() || superstructure.getState() == States.Home){
-        return moveHighScoreCube;
+    public Command toHighScoreCube(){
+      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        return moveHighScoreCube();
       }
       else {
         return Commands.none();
       }
     }
 
-    public CommandBase toHighScoreCone(){
-      if (superstructure.isInPreset() || superstructure.getState() == States.Home){
-        return moveHighScoreCone;
+    public Command toHighScoreCone(){
+      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        return moveHighScoreCone();
       }
       else {
         return Commands.none();
       }
     }
 
-    public CommandBase toHome(){
-      if (superstructure.isInPreset()){
-        if (superstructure.getState() == States.Home){
+    public Command toHome(){
+      if (this.superstructure.ifInPreset()){
+        if (this.superstructure.getState() == States.Home){
           return Commands.none();
         }
-        else if(superstructure.getState() == States.TopScoreCone || superstructure.getState() == States.TopScoreCube){
-          return moveHomeFromHigh;
+        else if(this.superstructure.getState() == States.TopScoreCone || this.superstructure.getState() == States.TopScoreCube){
+          return moveHomeFromHigh();
         }
       }
 
-      return moveHome;
+      return moveHome();
     }
 }

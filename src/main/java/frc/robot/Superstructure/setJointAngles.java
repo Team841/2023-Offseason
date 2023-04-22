@@ -21,7 +21,7 @@ public class setJointAngles extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    superstructure.setJointAngles(this.goalAngles);
+    superstructure.moveJointAngles(this.goalAngles);
   }
 
   // Called once the command ends or is interrupted.

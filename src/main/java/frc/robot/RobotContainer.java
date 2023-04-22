@@ -22,6 +22,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Superstructure superstructure = new Superstructure();
   private final SuperstructureFactory factory = new SuperstructureFactory(superstructure);
+  private final Intake intake = new Intake();
 
   private final CommandXboxController m_codriverCtrl = new CommandXboxController(Constants.OI.codriverPort);
   private final CommandPS4Controller m_driverCtrl = new CommandPS4Controller(Constants.OI.driverPortLeft);
@@ -74,16 +75,16 @@ public class RobotContainer {
     ////////////////////////// CODRIVER COMMANDS //////////////////////////
 
     // Intake
-    coneIntakeToggle.onTrue(new InstantCommand(superstructure::toggleIntakeIn, superstructure));
-    cubeIntakeToggle.onTrue(new InstantCommand(superstructure::toggleIntakeOut, superstructure)); 
+    coneIntakeToggle.onTrue(new InstantCommand(intake::toggleIntakeIn, intake));
+    cubeIntakeToggle.onTrue(new InstantCommand(intake::toggleIntakeOut, intake)); 
 
     // Movement
-    MoveHome.onTrue(factory.moveHome); 
-    MoveGround.onTrue(factory.moveGround);
-    MoveMidScoreCube.onTrue(factory.moveMidScoreCube);
-    MoveMidScoreCone.onTrue(factory.moveMidScoreCone);
-    MoveTopScoreCube.onTrue(factory.moveHighScoreCube);
-    MoveTopScoreCone.onTrue(factory.moveHighScoreCone);
+    MoveHome.onTrue(factory.toHome()); 
+    MoveGround.onTrue(factory.toGround());
+    MoveMidScoreCube.onTrue(factory.toHighScoreCube());
+    MoveMidScoreCone.onTrue(factory.toHighScoreCone());
+    MoveTopScoreCube.onTrue(factory.toHighScoreCube());
+    MoveTopScoreCone.onTrue(factory.toHighScoreCone());
   }
 
   public Command getAutonomousCommand() {

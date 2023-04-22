@@ -20,13 +20,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Superstructure extends SubsystemBase {
 
-  private CommandScheduler scheduler = CommandScheduler.getInstance();
-
   public final BioFalcon shoulderMotor_starboard = new BioFalcon(Constants.CANid.shoulderMotor_Starboard, false, false, SC.Shoulder.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
   public final BioFalcon shoulderMotor_port = new BioFalcon(Constants.CANid.shoulderMotor_Port, false, true, SC.Shoulder.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
   public final BioFalcon elbowMotor = new BioFalcon(Constants.CANid.elbowMotor, false, false, SC.Elbow.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
-
-  private final TalonFX IntakeMotor = new TalonFX(Constants.CANid.IntakeTalon); 
 
   DigitalInput ElbowIndexSensor = new DigitalInput(SC.Elbow.IndexChannel);
   DigitalInput ShoulderIndexSensor = new DigitalInput(SC.Shoulder.IndexChannel);
@@ -45,20 +41,13 @@ public class Superstructure extends SubsystemBase {
   public SC.PresetPositions rangePreset = new SC.PresetPositions();
 
   public Superstructure() {
-
     shoulderMotor_port.follow(shoulderMotor_starboard);
-
-    IntakeMotor.configFactoryDefault();
-    IntakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
-    IntakeMotor.setNeutralMode(NeutralMode.Brake);
-
-    rangePreset.applyRange();
   }
 
   @Override
   public void periodic() {
 
-    inTolerance(getJointAngles());
+    isInPreset = inTolerance(getJointAngles());
 
     if (state == States.Home){
       checkSensors();
@@ -76,7 +65,7 @@ public class Superstructure extends SubsystemBase {
 
   /////////////////////////////// Control Methods ///////////////////////////////
 
-  public void setJointAngles(double[] angles){
+  public void moveJointAngles(double[] angles){ 
     shoulderMotor_starboard.set(TalonFXControlMode.Position, angleToCounts(angles[0], SC.Shoulder.GearRatio));
     elbowMotor.set(TalonFXControlMode.Position, angleToCounts(angles[1], SC.Elbow.GearRatio));
   }
@@ -104,22 +93,6 @@ public class Superstructure extends SubsystemBase {
 
   public void moveElbow(double speed) {
     elbowMotor.set(ControlMode.PercentOutput, speed);
-  }
-
-  public void toggleIntakeIn() {
-    if(IntakeMotor.getMotorOutputPercent()==0){
-      IntakeMotor.set(ControlMode.PercentOutput, SC.Intake.teleopPower);
-    } else {
-      IntakeMotor.set(ControlMode.PercentOutput, 0);
-    }
-  }
-
-  public void toggleIntakeOut() {
-    if(IntakeMotor.getMotorOutputPercent()==0){
-      IntakeMotor.set(ControlMode.PercentOutput, -SC.Intake.teleopPower);
-    } else {
-      IntakeMotor.set(ControlMode.PercentOutput, 0);
-    }
   }
 
   /////////////////////////////// End Control Methods ///////////////////////////////
@@ -171,7 +144,7 @@ public class Superstructure extends SubsystemBase {
     return this.state;
   }
 
-  public boolean isInPreset(){
+  public boolean ifInPreset(){
     return this.isInPreset;
   }
 
@@ -192,11 +165,11 @@ public class Superstructure extends SubsystemBase {
     }
   }
 
-  public void inTolerance(double[] angles){
-    if (SC.PresetPositions.elbowRange.get(angles[0]) == null || SC.PresetPositions.shoulderRange.get(angles[1]) == null){
-      isInPreset = false; return;
+  public boolean inTolerance(double[] angles){
+    if (SC.PresetPositions.elbowRange.get(angles[1]) == null || SC.PresetPositions.shoulderRange.get(angles[0]) == null){
+      return false;
     } 
-    isInPreset = true; return;
+    return true;
   }
 
   /////////////////////////////// End Periodic  ///////////////////////////////
