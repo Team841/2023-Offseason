@@ -50,15 +50,23 @@ public class Superstructure extends SubsystemBase {
     isInPreset = inTolerance(getJointAngles());
 
     if (state == States.Home){
-      checkSensors();
+      if(getElbowIndexSensor()){
+        elbowMotor.setSelectedSensorPosition(0);
+        elbowMotor.setNeutralMode(NeutralMode.Brake);
+      }
+  
+      if(getShoulderIndexSensor()){
+        shoulderMotor_starboard.setSelectedSensorPosition(0);
+        shoulderMotor_starboard.setNeutralMode(NeutralMode.Brake);
+        shoulderMotor_port.setNeutralMode(NeutralMode.Brake);
+      }
     }
-
   }
 
   ///////////////////////////////// Commands ///////////////////////////////
 
   public void setInput(States state){
-    this.input = state;
+    this.state = state;
   }
 
   ///////////////////////////////// End Commands ///////////////////////////////
@@ -152,17 +160,13 @@ public class Superstructure extends SubsystemBase {
 
   /////////////////////////////// Periodic  ///////////////////////////////
 
-  public void checkSensors(){
-    if(getElbowIndexSensor()){
-      elbowMotor.setSelectedSensorPosition(0);
-      elbowMotor.setNeutralMode(NeutralMode.Brake);
-    }
+  public void updateShuffleBoard(){
 
-    if(getShoulderIndexSensor()){
-      shoulderMotor_starboard.setSelectedSensorPosition(0);
-      shoulderMotor_starboard.setNeutralMode(NeutralMode.Brake);
-      shoulderMotor_port.setNeutralMode(NeutralMode.Brake);
-    }
+    SmartDashboard.putNumber("shoulder Postion", countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
+    SmartDashboard.putNumber("elbow Postion", countsToAngle(elbowMotor.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
+
+    SmartDashboard.putBoolean("Sh_Index", getShoulderIndexSensor());
+    SmartDashboard.putBoolean("Elbow Index", getElbowIndexSensor());
   }
 
   public boolean inTolerance(double[] angles){

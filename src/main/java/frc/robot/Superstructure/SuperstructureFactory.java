@@ -90,6 +90,7 @@ public class SuperstructureFactory{
 
     public Command toGround(){
       if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        this.superstructure.setInput(States.Ground);
         return moveGround();
       }
       else {
@@ -99,6 +100,7 @@ public class SuperstructureFactory{
 
     public Command toMidScoreCube(){
       if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        this.superstructure.setInput(States.MidScoreCube);
         return moveMidScoreCube();
       }
       else {
@@ -108,6 +110,7 @@ public class SuperstructureFactory{
 
     public Command toMidScoreCone(){
       if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        this.superstructure.setInput(States.MidScoreCone);
         return moveMidScoreCone();
       }
       else {
@@ -117,6 +120,7 @@ public class SuperstructureFactory{
 
     public Command toHighScoreCube(){
       if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        this.superstructure.setInput(States.MidScoreCube);
         return moveHighScoreCube();
       }
       else {
@@ -126,6 +130,7 @@ public class SuperstructureFactory{
 
     public Command toHighScoreCone(){
       if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+        this.superstructure.setInput(States.TopScoreCone);
         return moveHighScoreCone();
       }
       else {
@@ -139,10 +144,11 @@ public class SuperstructureFactory{
           return Commands.none();
         }
         else if(this.superstructure.getState() == States.TopScoreCone || this.superstructure.getState() == States.TopScoreCube){
+          this.superstructure.setInput(States.Home);
           return moveHomeFromHigh();
         }
       }
-
+      this.superstructure.setInput(States.Home);
       return moveHome();
     }
 }
