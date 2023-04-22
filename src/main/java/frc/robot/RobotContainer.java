@@ -21,16 +21,36 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
   private final Superstructure superstructure = new Superstructure();
+  private final SuperstructureFactory factory = new SuperstructureFactory(superstructure);
 
   private final CommandXboxController m_codriverCtrl = new CommandXboxController(Constants.OI.codriverPort);
   private final CommandPS4Controller m_driverCtrl = new CommandPS4Controller(Constants.OI.driverPortLeft);
+
+  // Create the button commands
+
+  // Driver
+  final Trigger qT = m_driverCtrl.R1();
+  final Trigger BrakeOn = m_driverCtrl.cross();
+  final Trigger BrakeOff = m_driverCtrl.square();
+
+  final Trigger ljakdsczvjbduebfjd = m_driverCtrl.circle();
+
+  // CoDriver
+  private final Trigger MoveHome = m_codriverCtrl.x();
+  private final Trigger MoveGround = m_codriverCtrl.b();
+  private final Trigger MoveMidScoreCube = m_codriverCtrl.rightBumper();
+  private final Trigger MoveMidScoreCone = m_codriverCtrl.leftBumper();
+  private final Trigger MoveTopScoreCube = m_codriverCtrl.rightTrigger();
+  private final Trigger MoveTopScoreCone = m_codriverCtrl.leftTrigger();
+
+  private final Trigger coneIntakeToggle = m_codriverCtrl.y();
+  private final Trigger cubeIntakeToggle = m_codriverCtrl.a();
 
   public RobotContainer() {
     
     configureBindings();
     drivetrain.setDefaultCommand(
       new RunCommand(() -> drivetrain.Drive(m_driverCtrl.getRightX(), m_driverCtrl.getLeftY()),drivetrain));
-
   }
     
   private void configureBindings() {
@@ -39,25 +59,31 @@ public class RobotContainer {
 
     /* Driver Commands */
     //Quick turn
-    final Trigger qT = m_driverCtrl.R1();
-      qT.onTrue(new InstantCommand(drivetrain::setQuickTurn, drivetrain));
-      qT.onFalse(new InstantCommand(drivetrain::resetQuickTurn, drivetrain));
+    qT.onTrue(new InstantCommand(drivetrain::setQuickTurn, drivetrain));
+    qT.onFalse(new InstantCommand(drivetrain::resetQuickTurn, drivetrain));
     /* final Trigger AutoBalance = m_driverCtrl.cross();
       AutoBalance.whileTrue(new AutoBalance(drivetrain));
     final Trigger AutoTurn = m_driverCtrl.square();
       AutoTurn.onTrue(new AutoTurn(drivetrain, 270));
     final Trigger AutoDistance = m_driverCtrl.circle();
       AutoDistance.onTrue(new AutoDriveToDistance(drivetrain, 48)); */
-    final Trigger ljakdsczvjbduebfjd = m_driverCtrl.circle();
-      ljakdsczvjbduebfjd.onTrue(new AutoDriveToDistance(drivetrain, 48));
-    final Trigger BrakeOn = m_driverCtrl.cross();
+    ljakdsczvjbduebfjd.onTrue(new AutoDriveToDistance(drivetrain, 48));
     BrakeOn.onTrue(new InstantCommand(drivetrain::BrakeOn, drivetrain));
-    final Trigger BrakeOff = m_driverCtrl.square();
     BrakeOff.onTrue(new InstantCommand(drivetrain::BrakeOff, drivetrain));
 
     ////////////////////////// CODRIVER COMMANDS //////////////////////////
 
+    // Intake
+    coneIntakeToggle.onTrue(new InstantCommand(superstructure::toggleIntakeIn, superstructure));
+    cubeIntakeToggle.onTrue(new InstantCommand(superstructure::toggleIntakeOut, superstructure)); 
 
+    // Movement
+    MoveHome.onTrue(factory.moveHome); 
+    MoveGround.onTrue(factory.moveGround);
+    MoveMidScoreCube.onTrue(factory.moveMidScoreCube);
+    MoveMidScoreCone.onTrue(factory.moveMidScoreCone);
+    MoveTopScoreCube.onTrue(factory.moveHighScoreCube);
+    MoveTopScoreCone.onTrue(factory.moveHighScoreCone);
   }
 
   public Command getAutonomousCommand() {

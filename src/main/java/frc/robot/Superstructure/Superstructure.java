@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.google.common.collect.RangeMap;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -65,10 +64,6 @@ public class Superstructure extends SubsystemBase {
       checkSensors();
     }
 
-    if (input != States.Nothing){
-      move();
-    }
-    
   }
 
   ///////////////////////////////// Commands ///////////////////////////////
@@ -76,88 +71,6 @@ public class Superstructure extends SubsystemBase {
   public void setInput(States state){
     this.input = state;
   }
-
-  public void move(){
-    if (input != States.Home && isInPreset){
-      switch (input){
-        case Ground -> {
-          if (input != States.TopScoreCone && input != States.TopScoreCube){
-            scheduler.schedule(moveGround());
-          } else {
-            scheduler.schedule(moveIntermediateAndPreExtractIn(), moveGround());
-          }
-        } 
-
-        default -> {
-          break;
-        }
-      }
-    }
-  }
-
-  public CommandBase moveGround(){
-    return this.run(() -> 
-    setJointAngles(SC.PresetPositions.Intermediate))
-    .andThen(() -> setJointAngles(SC.PresetPositions.Ground))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
-  public CommandBase moveMidScoreCube(){
-    return this.run(() -> 
-    setJointAngles(SC.PresetPositions.Intermediate))
-    .andThen(() -> setJointAngles(SC.PresetPositions.MidScoreCube))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
-  public CommandBase moveMidScoreCone(){
-    return this.run(() -> 
-    setJointAngles(SC.PresetPositions.Intermediate))
-    .andThen(() -> setJointAngles(SC.PresetPositions.MidScoreCone))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
-  public CommandBase moveHighScoreCube(){
-    return this.run(() -> 
-    setJointAngles(SC.PresetPositions.Intermediate))
-    .andThen(() -> setJointAngles(SC.PresetPositions.HighScoreCube))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
-  public CommandBase moveHighScoreCone(){
-    return this.run(() ->
-    setJointAngles(SC.PresetPositions.Intermediate))
-    .andThen(() -> setJointAngles(SC.PresetPositions.HighScoreCone))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
-  public CommandBase moveHome(){
-    return this.run(() ->
-    setJointAngles(SC.PresetPositions.Intermediate))
-    .andThen(() -> setJointAngles(SC.PresetPositions.Home))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
-  public CommandBase moveIntermediateAndPreExtractIn(){
-    return this.run(() ->
-    setJointAngles(SC.PresetPositions.PreExtractIn))
-    .andThen(() -> setJointAngles(SC.PresetPositions.Intermediate))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
-  public CommandBase moveIntermediate(){
-    return this.run(() ->
-    setJointAngles(SC.PresetPositions.Intermediate))
-    .handleInterrupt(() -> stopJoints())
-    .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-  }
-
 
   ///////////////////////////////// End Commands ///////////////////////////////
 
@@ -256,6 +169,10 @@ public class Superstructure extends SubsystemBase {
 
   public States getState(){
     return this.state;
+  }
+
+  public boolean isInPreset(){
+    return this.isInPreset;
   }
 
   /////////////////////////////// End Getters ///////////////////////////////

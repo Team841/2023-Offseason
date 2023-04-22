@@ -19,6 +19,7 @@ public final class SC {
     public static final boolean kSensorPhase = true;
     public static final double[] fxOutputs = {1, -1};
 
+    public static final double manualIncrementOffset = 0.06;
 
     public static final class Shoulder{
 

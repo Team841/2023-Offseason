@@ -7,9 +7,10 @@ public class setJointAngles extends CommandBase {
   private Superstructure superstructure;
   private double[] goalAngles;
 
-  public setJointAngles(Superstructure _Superstructure, double shoulderAngle, double elbowAngle) {
+  public setJointAngles(Superstructure _Superstructure, double[] _goalAngles) {
     this.superstructure = _Superstructure;
-    this.goalAngles = new double[]{shoulderAngle, elbowAngle};
+    // this.goalAngles = new double[]{shoulderAngle, elbowAngle};
+    this.goalAngles = _goalAngles;
     addRequirements(_Superstructure);
   }
 
