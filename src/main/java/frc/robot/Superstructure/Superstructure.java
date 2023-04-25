@@ -34,9 +34,9 @@ public class Superstructure extends SubsystemBase {
   }
 
   private States state = States.Home;
-  private States input = States.Nothing;
 
   public boolean isInPreset = false;
+  public boolean canMove = false;
 
   public SC.PresetPositions rangePreset = new SC.PresetPositions();
 
@@ -47,7 +47,8 @@ public class Superstructure extends SubsystemBase {
   @Override
   public void periodic() {
 
-    isInPreset = inTolerance(getJointAngles());
+    inTolerance(getJointAngles());
+    readyToMove();
 
     if (state == States.Home){
       if(getElbowIndexSensor()){
@@ -61,6 +62,8 @@ public class Superstructure extends SubsystemBase {
         shoulderMotor_port.setNeutralMode(NeutralMode.Brake);
       }
     }
+
+    updateShuffleBoard();
   }
 
   ///////////////////////////////// Commands ///////////////////////////////
@@ -162,18 +165,27 @@ public class Superstructure extends SubsystemBase {
 
   public void updateShuffleBoard(){
 
-    SmartDashboard.putNumber("shoulder Postion", countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
-    SmartDashboard.putNumber("elbow Postion", countsToAngle(elbowMotor.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
+    SmartDashboard.putNumber("Shoulder Postion", countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
+    SmartDashboard.putNumber("Elbow Postion", countsToAngle(elbowMotor.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
 
-    SmartDashboard.putBoolean("Sh_Index", getShoulderIndexSensor());
+    SmartDashboard.putBoolean("Shoulder Index", getShoulderIndexSensor());
     SmartDashboard.putBoolean("Elbow Index", getElbowIndexSensor());
+
+    SmartDashboard.putString("State", state.toString());
+    SmartDashboard.putBoolean("Is in Preset", isInPreset);
+
+    SmartDashboard.putBoolean("Ready to move to new state", canMove);
   }
 
-  public boolean inTolerance(double[] angles){
+  public void inTolerance(double[] angles){
     if (SC.PresetPositions.elbowRange.get(angles[1]) == null || SC.PresetPositions.shoulderRange.get(angles[0]) == null){
-      return false;
+      isInPreset = false;
     } 
-    return true;
+    isInPreset =  true;
+  }
+
+  public void readyToMove(){
+    canMove = ifInPreset() && getState() == States.Home;
   }
 
   /////////////////////////////// End Periodic  ///////////////////////////////

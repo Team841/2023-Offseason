@@ -16,7 +16,7 @@ public class SuperstructureFactory{
         this.superstructure = _superstructure;
     }
 
-    public Command moveGround() {
+    public CommandBase moveGround() {
       return new SequentialCommandGroup(
         new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
         new setJointAngles(this.superstructure, SC.PresetPositions.Ground))
@@ -24,7 +24,7 @@ public class SuperstructureFactory{
         .handleInterrupt(() -> this.superstructure.stopJoints());
     }
     
-    public Command moveMidScoreCube() {
+    public CommandBase moveMidScoreCube() {
       return new SequentialCommandGroup(
         new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
         new setJointAngles(this.superstructure, SC.PresetPositions.MidScoreCube))
@@ -41,7 +41,7 @@ public class SuperstructureFactory{
     }
 
     public CommandBase moveHighScoreCube() {
-      return new SequentialCommandGroup(
+        return new SequentialCommandGroup(
         new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
         new setJointAngles(this.superstructure, SC.PresetPositions.HighScoreCube))
         .handleInterrupt(() -> this.superstructure.stopJoints())
@@ -72,8 +72,8 @@ public class SuperstructureFactory{
         .handleInterrupt(() -> this.superstructure.stopJoints())
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
     }
-      
-    public CommandBase moveIntermediateAndPreExtractIn() {  // Go to pre extract in and then intermediate
+    
+    public CommandBase moveIntermediateAndPreExtractIn() {
       return new SequentialCommandGroup(
         new setJointAngles(this.superstructure, SC.PresetPositions.PreExtractIn),
         new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate))
@@ -81,74 +81,82 @@ public class SuperstructureFactory{
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
     }
         
-    public CommandBase moveIntermediate () { // Go to Intermediate
+    public CommandBase moveIntermediate() {
       return new SequentialCommandGroup(
         new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate))
         .handleInterrupt(() -> this.superstructure.stopJoints())
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
     }
 
-    public Command toGround(){
-      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+    public CommandBase toGround(){
+      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.Ground);
-        return moveGround();
+        var ground = moveGround();
+        return ground;
       }
       else {
         return Commands.none();
       }
     }
 
-    public Command toMidScoreCube(){
-      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+    public CommandBase toMidScoreCube(){
+      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.MidScoreCube);
-        return moveMidScoreCube();
+        var MidScoreCube = moveMidScoreCube();
+        return MidScoreCube;
       }
       else {
         return Commands.none();
       }
     }
 
-    public Command toMidScoreCone(){
-      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+    public CommandBase toMidScoreCone(){
+      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.MidScoreCone);
-        return moveMidScoreCone();
+        var MidScoreCone = moveMidScoreCone();
+        return MidScoreCone;
       }
       else {
         return Commands.none();
       }
     }
 
-    public Command toHighScoreCube(){
-      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+    public CommandBase toHighScoreCube(){
+      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.MidScoreCube);
-        return moveHighScoreCube();
+        var HighScoreCube = toHighScoreCone();
+        return HighScoreCube;
       }
       else {
         return Commands.none();
       }
     }
 
-    public Command toHighScoreCone(){
-      if (this.superstructure.ifInPreset() || this.superstructure.getState() == States.Home){
+    public CommandBase toHighScoreCone(){
+      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.TopScoreCone);
-        return moveHighScoreCone();
+        var HighScoreCone = moveHighScoreCone();
+        return HighScoreCone;
       }
       else {
         return Commands.none();
       }
     }
 
-    public Command toHome(){
+    public CommandBase toHome(){
       if (this.superstructure.ifInPreset()){
         if (this.superstructure.getState() == States.Home){
           return Commands.none();
         }
         else if(this.superstructure.getState() == States.TopScoreCone || this.superstructure.getState() == States.TopScoreCube){
           this.superstructure.setInput(States.Home);
-          return moveHomeFromHigh();
+          var HomeFromHigh = moveHomeFromHigh();
+          return HomeFromHigh;
         }
+        this.superstructure.setInput(States.Home);
+        var Home = moveHome();
+        return Home;
       }
-      this.superstructure.setInput(States.Home);
-      return moveHome();
+      return Commands.none();   
     }
 }

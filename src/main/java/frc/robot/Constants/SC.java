@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+ // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -36,7 +36,7 @@ public final class SC {
         public static final Gains gains = new Gains(0.0003, 0, 0, 0, 0, 5000, 5000000, 0);
         public static final Gains[] setupGains = {gains, new Gains(), new Gains()};
 
-        public static final int IndexChannel = 1;
+        public static final int IndexChannel = 0;
 
         // in sensor units per 100ms
         public static final double MMAccelLimit = 5000;
@@ -60,7 +60,7 @@ public final class SC {
         public static final Gains gains = new Gains(0.0005, 0, 0, 0, 0, 5000, 5000000, 0);
         public static final Gains[] setupGains = {gains, new Gains(), new Gains()};
 
-        public static final int IndexChannel = 0;
+        public static final int IndexChannel = 1;
 
         // in sensor units per 100ms
         public static final double MMAccelLimit = 5000;

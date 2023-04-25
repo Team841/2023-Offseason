@@ -75,7 +75,7 @@ public class Drivetrain extends SubsystemBase {
     left2.follow(left1);
     right2.follow(right1);
 
-    setDrivetrainBrakeMode(true);
+    setDrivetrainBrakeMode(false);
 
 
     left_distance_pid.setP(Drive.Drivetrain.distance_kp);
