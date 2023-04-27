@@ -12,6 +12,8 @@ public class SuperstructureFactory{
 
     private Superstructure superstructure;
 
+    private static CommandScheduler scheduler = CommandScheduler.getInstance();
+
     public SuperstructureFactory(Superstructure _superstructure){
         this.superstructure = _superstructure;
     }
@@ -89,58 +91,60 @@ public class SuperstructureFactory{
     }
 
     public CommandBase toGround(){
+      System.out.println("toGround called");
       if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
+        System.out.println("Ready to Move");
         this.superstructure.setInput(States.Ground);
-        var ground = moveGround();
-        return ground;
+        var moveGround = moveGround();
+        System.out.println(moveGround.toString());
+        scheduler.schedule(moveGround);
+        var isSched = scheduler.isScheduled(moveGround);
+        System.out.println(isSched);
+      } else {
+        System.out.println("toGround Check failed");
       }
-      else {
         return Commands.none();
-      }
     }
 
     public CommandBase toMidScoreCube(){
+      System.out.println("toMidScoreCube called");
       if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.MidScoreCube);
-        var MidScoreCube = moveMidScoreCube();
-        return MidScoreCube;
+        var moveMidScoreCube = moveMidScoreCube();
+        scheduler.schedule(moveMidScoreCube);
       }
-      else {
-        return Commands.none();
-      }
+      
+      return Commands.none();
     }
 
     public CommandBase toMidScoreCone(){
       if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.MidScoreCone);
-        var MidScoreCone = moveMidScoreCone();
-        return MidScoreCone;
+        var moveMidScoreCone = moveMidScoreCone();
+        scheduler.schedule(moveMidScoreCone);
       }
-      else {
-        return Commands.none();
-      }
+      
+      return Commands.none();
     }
 
     public CommandBase toHighScoreCube(){
       if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.MidScoreCube);
-        var HighScoreCube = toHighScoreCone();
-        return HighScoreCube;
+        var toHighScoreCube = toHighScoreCube();
+        scheduler.schedule(toHighScoreCube);
       }
-      else {
-        return Commands.none();
-      }
+      
+      return Commands.none();
     }
 
     public CommandBase toHighScoreCone(){
       if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
         this.superstructure.setInput(States.TopScoreCone);
-        var HighScoreCone = moveHighScoreCone();
-        return HighScoreCone;
+        var toHighScoreCone = toHighScoreCone();
+        scheduler.schedule(toHighScoreCone);
       }
-      else {
-        return Commands.none();
-      }
+      
+      return Commands.none();
     }
 
     public CommandBase toHome(){
@@ -150,13 +154,15 @@ public class SuperstructureFactory{
         }
         else if(this.superstructure.getState() == States.TopScoreCone || this.superstructure.getState() == States.TopScoreCube){
           this.superstructure.setInput(States.Home);
-          var HomeFromHigh = moveHomeFromHigh();
-          return HomeFromHigh;
+          var toHomeFromHigh = moveHomeFromHigh();
+          scheduler.schedule(toHomeFromHigh);
+        } else {
+          this.superstructure.setInput(States.Home);
+          var toHome = toHome();
+          scheduler.schedule(toHome);
         }
-        this.superstructure.setInput(States.Home);
-        var Home = moveHome();
-        return Home;
       }
+
       return Commands.none();   
     }
 }
