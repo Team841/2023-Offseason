@@ -80,7 +80,7 @@ public class RobotContainer {
 
     // Movement
     MoveHome.onTrue(factory.toHome()); 
-    MoveGround.onTrue(new  factory.toGround());
+    MoveGround.onTrue(factory.toGround());
     MoveMidScoreCube.onTrue(factory.toMidScoreCube());
     MoveMidScoreCone.onTrue(factory.toMidScoreCone());
     MoveTopScoreCube.onTrue(factory.toHighScoreCube());

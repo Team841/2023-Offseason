@@ -35,7 +35,6 @@ public class Superstructure extends SubsystemBase {
 
   private States state = States.Home;
 
-  public boolean isInPreset = false;
   public boolean canMove = false;
 
   public SC.PresetPositions rangePreset = new SC.PresetPositions();
@@ -179,9 +178,11 @@ public class Superstructure extends SubsystemBase {
 
   public void inTolerance(double[] angles){
     if (SC.PresetPositions.elbowRange.get(angles[1]) == null || SC.PresetPositions.shoulderRange.get(angles[0]) == null){
-      isInPreset = false;
-    } 
-    isInPreset =  true;
+      state = States.Nothing;
+    } else {
+      state = 
+    }
+    
   }
 
   public void readyToMove(){
