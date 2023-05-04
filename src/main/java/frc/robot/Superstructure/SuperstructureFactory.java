@@ -91,67 +91,38 @@ public class SuperstructureFactory{
     }
 
     public CommandBase toGround(){
-      System.out.println("toGround called");
-      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
-        System.out.println("Ready to Move");
-        this.superstructure.setInput(States.Ground);
-        var moveGround = moveGround();
-        System.out.println(moveGround.toString());
-        scheduler.schedule(moveGround);
-        var isSched = scheduler.isScheduled(moveGround);
-        System.out.println(isSched);
-      } else {
-        System.out.println("toGround Check failed");
-      }
-        return Commands.none();
+      return superstructure.runOnce(
+        () -> moveGround())
+        .unless(() -> this.superstructure.getState() == States.Nothing || !(this.superstructure.getState() == States.Home));
     }
 
     public CommandBase toMidScoreCube(){
-      System.out.println("toMidScoreCube called");
-      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
-        this.superstructure.setInput(States.MidScoreCube);
-        var moveMidScoreCube = moveMidScoreCube();
-        scheduler.schedule(moveMidScoreCube);
-      }
-      
-      return Commands.none();
+      return superstructure.runOnce(
+        () -> moveMidScoreCube())
+        .unless(() -> this.superstructure.getState() == States.Nothing || !(this.superstructure.getState() == States.Home));
     }
 
     public CommandBase toMidScoreCone(){
-      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
-        this.superstructure.setInput(States.MidScoreCone);
-        var moveMidScoreCone = moveMidScoreCone();
-        scheduler.schedule(moveMidScoreCone);
-      }
-      
-      return Commands.none();
+      return superstructure.runOnce(
+        () -> moveMidScoreCone())
+        .unless(() -> this.superstructure.getState() == States.Nothing || !(this.superstructure.getState() == States.Home));
     }
 
     public CommandBase toHighScoreCube(){
-      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
-        this.superstructure.setInput(States.MidScoreCube);
-        var toHighScoreCube = toHighScoreCube();
-        scheduler.schedule(toHighScoreCube);
-      }
-      
-      return Commands.none();
+      return superstructure.runOnce(
+        () -> moveHighScoreCube())
+        .unless(() -> this.superstructure.getState() == States.Nothing || !(this.superstructure.getState() == States.Home));
     }
 
     public CommandBase toHighScoreCone(){
-      if (this.superstructure.ifInPreset() && this.superstructure.getState() == States.Home){
-        this.superstructure.setInput(States.TopScoreCone);
-        var toHighScoreCone = toHighScoreCone();
-        scheduler.schedule(toHighScoreCone);
-      }
-      
-      return Commands.none();
+      return superstructure.runOnce(
+        () -> moveHighScoreCone())
+        .unless(() -> this.superstructure.getState() == States.Nothing || !(this.superstructure.getState() == States.Home)); 
     }
 
     public CommandBase toHome(){
-      if (this.superstructure.ifInPreset()){
-        if (this.superstructure.getState() == States.Home){
-          return Commands.none();
-        }
+      return superstructure.runOnce(() -> {
+        if (this.superstructure.getState() == States.Home){;}
         else if(this.superstructure.getState() == States.TopScoreCone || this.superstructure.getState() == States.TopScoreCube){
           this.superstructure.setInput(States.Home);
           var toHomeFromHigh = moveHomeFromHigh();
@@ -161,8 +132,7 @@ public class SuperstructureFactory{
           var toHome = toHome();
           scheduler.schedule(toHome);
         }
-      }
-
-      return Commands.none();   
+      }); 
     }
 }
+  

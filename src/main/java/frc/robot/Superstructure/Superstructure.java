@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.google.common.util.concurrent.Service.State;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -34,6 +35,7 @@ public class Superstructure extends SubsystemBase {
   }
 
   private States state = States.Home;
+  public boolean isDisabled = false;
 
   public boolean canMove = false;
 
@@ -47,9 +49,8 @@ public class Superstructure extends SubsystemBase {
   public void periodic() {
 
     inTolerance(getJointAngles());
-    readyToMove();
 
-    if (state == States.Home){
+    if (state == States.Home || isDisabled){
       if(getElbowIndexSensor()){
         elbowMotor.setSelectedSensorPosition(0);
         elbowMotor.setNeutralMode(NeutralMode.Brake);
@@ -105,6 +106,14 @@ public class Superstructure extends SubsystemBase {
     elbowMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  public void isDisabled() {
+    isDisabled = true;
+  }
+
+  public void nowEnabled() {
+    isDisabled = false;
+  }
+
   /////////////////////////////// End Control Methods ///////////////////////////////
 
   /////////////////////////////// Math ///////////////////////////////
@@ -154,9 +163,6 @@ public class Superstructure extends SubsystemBase {
     return this.state;
   }
 
-  public boolean ifInPreset(){
-    return this.isInPreset;
-  }
 
   /////////////////////////////// End Getters ///////////////////////////////
 
@@ -171,22 +177,19 @@ public class Superstructure extends SubsystemBase {
     SmartDashboard.putBoolean("Elbow Index", getElbowIndexSensor());
 
     SmartDashboard.putString("State", state.toString());
-    SmartDashboard.putBoolean("Is in Preset", isInPreset);
 
     SmartDashboard.putBoolean("Ready to move to new state", canMove);
+
+    SmartDashboard.putBoolean("Disabled", isDisabled);
   }
 
   public void inTolerance(double[] angles){
-    if (SC.PresetPositions.elbowRange.get(angles[1]) == null || SC.PresetPositions.shoulderRange.get(angles[0]) == null){
-      state = States.Nothing;
+    if (SC.PresetPositions.shoulderRange.get(angles[0]) != null && SC.PresetPositions.shoulderRange.get(angles[0]) == SC.PresetPositions.elbowRange.get(angles[1])){
+      state = SC.PresetPositions.shoulderRange.get(angles[0]);
     } else {
-      state = 
+      state = States.Nothing;
     }
     
-  }
-
-  public void readyToMove(){
-    canMove = ifInPreset() && getState() == States.Home;
   }
 
   /////////////////////////////// End Periodic  ///////////////////////////////

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -56,11 +58,13 @@ public class RobotContainer {
     
   private void configureBindings() {
 
+    new Trigger(DriverStation::isDisabled).onTrue(new InstantCommand(superstructure::isDisabled)).onFalse(new InstantCommand(superstructure::nowEnabled));
+
     /* https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj2/command/button/Button.html */
 
     /* Driver Commands */
     //Quick turn
-    qT.onTrue(new InstantCommand(drivetrain::setQuickTurn, drivetrain));
+    qT.onTrue(new InstantCommand(drivetrain::setQuickTurn, drivetrain));  
     qT.onFalse(new InstantCommand(drivetrain::resetQuickTurn, drivetrain));
     /* final Trigger AutoBalance = m_driverCtrl.cross();
       AutoBalance.whileTrue(new AutoBalance(drivetrain));
