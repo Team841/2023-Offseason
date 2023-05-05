@@ -7,6 +7,8 @@ package frc.robot.Constants;
 
 public final class Constants {
 
+    public static boolean isDisabled = true;
+
     public static final class OI{
         public static final int driverPortLeft = 0; //controller USB port 0
         public static final int driverPortRight = 1; //controller USB port 1

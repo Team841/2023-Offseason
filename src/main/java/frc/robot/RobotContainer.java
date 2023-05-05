@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -17,7 +15,6 @@ import frc.robot.Drive.*;
 import frc.robot.Superstructure.*;
 import frc.robot.Auto.PIDControllers.AutoDriveToDistance;
 import frc.robot.Constants.Constants;
-import frc.robot.Constants.Drive;
 
 public class RobotContainer {
 
@@ -57,8 +54,6 @@ public class RobotContainer {
   }
     
   private void configureBindings() {
-
-    new Trigger(DriverStation::isDisabled).onTrue(new InstantCommand(superstructure::isDisabled)).onFalse(new InstantCommand(superstructure::nowEnabled));
 
     /* https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj2/command/button/Button.html */
 

@@ -1,18 +1,12 @@
 package frc.robot.Superstructure;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SC;
 import frc.lib.util.BioFalcon;
 import frc.robot.Constants.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.google.common.util.concurrent.Service.State;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -35,7 +29,6 @@ public class Superstructure extends SubsystemBase {
   }
 
   private States state = States.Home;
-  public boolean isDisabled = false;
 
   public boolean canMove = false;
 
@@ -50,7 +43,7 @@ public class Superstructure extends SubsystemBase {
 
     inTolerance(getJointAngles());
 
-    if (state == States.Home || isDisabled){
+    if (state == States.Home || Constants.isDisabled){
       if(getElbowIndexSensor()){
         elbowMotor.setSelectedSensorPosition(0);
         elbowMotor.setNeutralMode(NeutralMode.Brake);
@@ -104,14 +97,6 @@ public class Superstructure extends SubsystemBase {
 
   public void moveElbow(double speed) {
     elbowMotor.set(ControlMode.PercentOutput, speed);
-  }
-
-  public void isDisabled() {
-    isDisabled = true;
-  }
-
-  public void nowEnabled() {
-    isDisabled = false;
   }
 
   /////////////////////////////// End Control Methods ///////////////////////////////
@@ -180,7 +165,7 @@ public class Superstructure extends SubsystemBase {
 
     SmartDashboard.putBoolean("Ready to move to new state", canMove);
 
-    SmartDashboard.putBoolean("Disabled", isDisabled);
+    SmartDashboard.putBoolean("Disabled", Constants.isDisabled);
   }
 
   public void inTolerance(double[] angles){
