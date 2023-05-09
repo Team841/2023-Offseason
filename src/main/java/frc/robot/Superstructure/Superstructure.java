@@ -166,6 +166,9 @@ public class Superstructure extends SubsystemBase {
     SmartDashboard.putBoolean("Ready to move to new state", canMove);
 
     SmartDashboard.putBoolean("Disabled", Constants.isDisabled);
+
+    SmartDashboard.putString("Shoulderstate" ,SC.PresetPositions.shoulderRange.get(getJointAngles()[0]).toString());
+    SmartDashboard.putString("Elbow State", SC.PresetPositions.elbowRange.get(getJointAngles()[1]).toString());
   }
 
   public void inTolerance(double[] angles){
