@@ -5,11 +5,10 @@
 package frc.robot.Constants;
 
 import frc.lib.util.Gains;
+import frc.lib.util.RangeMap;
 import frc.robot.Superstructure.States;
 
-import com.google.common.collect.TreeRangeMap;
 import com.google.common.collect.Range;
-import com.google.common.collect.RangeMap;
 
 public final class SC {
 
@@ -87,9 +86,13 @@ public final class SC {
         public static final double[] MidScoreCone = {122.9 , -123.5};
         public static final double[] Ground = {39.8,-88.2};
 
-        
+        /*  
         public static final RangeMap<Double, States> elbowRange = TreeRangeMap.create();
         public static final RangeMap<Double, States> shoulderRange = TreeRangeMap.create();
+        */
+
+        public static final RangeMap<Double, States> elbowRange = new RangeMap<>();
+        public static final RangeMap<Double, States> shoulderRange = new RangeMap<>();
 
         public PresetPositions(){
             applyRange();
