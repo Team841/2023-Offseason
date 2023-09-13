@@ -15,12 +15,13 @@ import frc.robot.Drive.*;
 import frc.robot.Superstructure.*;
 import frc.robot.Auto.PIDControllers.AutoDriveToDistance;
 import frc.robot.Constants.Constants;
+import frc.robot.Superstructure.factory.SuperstructureFactoryAlpha;
 
 public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
   private final Superstructure superstructure = new Superstructure();
-  private final SuperstructureFactory factory = new SuperstructureFactory(superstructure);
+  private final SuperstructureFactoryAlpha factory = new SuperstructureFactoryAlpha(superstructure);
   private final Intake intake = new Intake();
 
   private final CommandXboxController m_codriverCtrl = new CommandXboxController(Constants.OI.codriverPort);
