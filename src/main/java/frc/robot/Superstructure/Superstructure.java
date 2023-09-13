@@ -1,7 +1,6 @@
 package frc.robot.Superstructure;
 
-import java.util.ArrayList;
-import java.util.List; 
+import frc.lib.util.BetterArrayList;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SC;
@@ -176,7 +175,9 @@ public class Superstructure extends SubsystemBase {
 
   public void inTolerance(double[] angles){
     if (SC.PresetPositions.shoulderRange.get(angles[0]) != null && SC.PresetPositions.shoulderRange.get(angles[0]) == SC.PresetPositions.elbowRange.get(angles[1])){
-      state = SC.PresetPositions.shoulderRange.get(angles[0]);
+      BetterArrayList<States> ShoulderRanges = SC.PresetPositions.shoulderRange.get(angles[0]);
+
+      BetterArrayList<States> UnionRanges = ShoulderRanges.union(SC.PresetPositions.elbowRange.get(angles[1]));
     } else {
       state = States.Nothing;
     }

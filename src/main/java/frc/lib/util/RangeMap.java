@@ -1,5 +1,4 @@
 package frc.lib.util;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +18,8 @@ public class RangeMap<K extends Comparable<K>, V> {
         ranges.put(range, value);
     }
     
-    public List<V> get(K key){
-        List<V> values = new ArrayList<>();
+    public BetterArrayList<V> get(K key){
+        BetterArrayList<V> values = new BetterArrayList<>();
         for(Map.Entry<Range<K>, V> entry : ranges.entrySet()){
             if(entry.getKey().contains(key)){
                 values.add(entry.getValue());
