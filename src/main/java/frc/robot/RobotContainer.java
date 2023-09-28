@@ -16,12 +16,13 @@ import frc.robot.Superstructure.*;
 import frc.robot.Auto.PIDControllers.AutoDriveToDistance;
 import frc.robot.Constants.Constants;
 import frc.robot.Superstructure.factory.SuperstructureFactoryAlpha;
+import frc.robot.Superstructure.factory.SuperstructureFactoryBeta;
 
 public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
   private final Superstructure superstructure = new Superstructure();
-  private final SuperstructureFactoryAlpha factory = new SuperstructureFactoryAlpha(superstructure);
+  private final SuperstructureFactoryBeta factory = new SuperstructureFactoryBeta(superstructure);
   private final Intake intake = new Intake();
 
   private final CommandXboxController m_codriverCtrl = new CommandXboxController(Constants.OI.codriverPort);
@@ -68,7 +69,7 @@ public class RobotContainer {
       AutoTurn.onTrue(new AutoTurn(drivetrain, 270));
     final Trigger AutoDistance = m_driverCtrl.circle();
       AutoDistance.onTrue(new AutoDriveToDistance(drivetrain, 48)); */
-    ljakdsczvjbduebfjd.onTrue(new AutoDriveToDistance(drivetrain, 48));
+    // ljakdsczvjbduebfjd.onTrue(new AutoDriveToDistance(drivetrain, 48));
     BrakeOn.onTrue(new InstantCommand(drivetrain::BrakeOn, drivetrain));
     BrakeOff.onTrue(new InstantCommand(drivetrain::BrakeOff, drivetrain));
 
@@ -79,12 +80,12 @@ public class RobotContainer {
     cubeIntakeToggle.onTrue(new InstantCommand(intake::toggleIntakeOut, intake)); 
 
     // Movement
-    MoveHome.onTrue(factory.toHome()); 
-    MoveGround.onTrue(factory.toGround());
-    MoveMidScoreCube.onTrue(factory.toMidScoreCube());
-    MoveMidScoreCone.onTrue(factory.toMidScoreCone());
-    MoveTopScoreCube.onTrue(factory.toHighScoreCube());
-    MoveTopScoreCone.onTrue(factory.toHighScoreCone());
+    MoveHome.onTrue(factory.moveHome()); 
+    MoveGround.onTrue(factory.moveGround());
+    MoveMidScoreCube.onTrue(factory.moveMidScoreCube());
+    MoveMidScoreCone.onTrue(factory.moveMidScoreCone());
+    MoveTopScoreCube.onTrue(factory.moveHighScoreCube());
+    MoveTopScoreCone.onTrue(factory.moveHighScoreCone());
   }
 
   public Command getAutonomousCommand() {

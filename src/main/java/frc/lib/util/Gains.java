@@ -6,6 +6,9 @@ package frc.lib.util;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+/**
+ * Note: Falcon Gains
+ */
 public class Gains {
 
     private SlotConfiguration config = new SlotConfiguration();

@@ -4,8 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 
-@Deprecated
-abstract class AbstractFactoryLogic implements AbstractFactoryMovement {
+abstract class AbstractFactoryLogicBeta implements AbstractFactoryMovement {
 
     @Override
     public CommandBase moveGround() {
@@ -52,27 +51,4 @@ abstract class AbstractFactoryLogic implements AbstractFactoryMovement {
         return null;
     }
 
-    public CommandBase toGround() {
-        return null;
-    }
-
-    public CommandBase toMidScoreCube() {
-        return null;
-    }
-
-    public CommandBase toMidScoreCone() {
-        return null;
-    }
-
-    public CommandBase toHighScoreCube() {
-        return null;
-    }
-
-    public CommandBase toHighScoreCone() {
-        return null;
-    }
-
-    public CommandBase toHome() {
-        return null;
-    }
 }

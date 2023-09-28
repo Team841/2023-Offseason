@@ -9,6 +9,7 @@ import frc.robot.Superstructure.States;
 import frc.robot.Superstructure.Superstructure;
 import frc.robot.Superstructure.setJointAngles;
 
+@Deprecated
 public class SuperstructureFactoryAlpha extends AbstractFactoryLogic {
 
     private Superstructure superstructure;

@@ -5,7 +5,7 @@
 package frc.robot.Constants;
 
 import frc.lib.util.Gains;
-import frc.lib.util.RangeMap;
+import frc.lib.util.BetterRangeMap;
 import frc.robot.Superstructure.States;
 
 import com.google.common.collect.Range;
@@ -91,8 +91,8 @@ public final class SC {
         public static final RangeMap<Double, States> shoulderRange = TreeRangeMap.create();
         */
 
-        public static final RangeMap<Double, States> elbowRange = new RangeMap<>();
-        public static final RangeMap<Double, States> shoulderRange = new RangeMap<>();
+        public static final BetterRangeMap<Double, States> elbowRange = new BetterRangeMap<>();
+        public static final BetterRangeMap<Double, States> shoulderRange = new BetterRangeMap<>();
 
         public PresetPositions(){
             applyRange();
