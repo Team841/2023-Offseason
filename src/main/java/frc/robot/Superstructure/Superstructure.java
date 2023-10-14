@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SC;
 import frc.robot.Constants.Constants;
 import frc.robot.Superstructure.factory.SuperstructureFactoryBeta;
+import frc.robot.states.States;
 import frc.robot.util.BetterArrayList;
 import frc.robot.util.BioFalcon;
-import frc.states.States;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;

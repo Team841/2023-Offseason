@@ -1,9 +1,9 @@
 package frc.robot.Superstructure;
 
 import frc.robot.Constants.SC;
+import frc.robot.states.States;
+import frc.robot.states.SuperstructureStatePreset;
 import frc.robot.util.BetterArrayList;
-import frc.states.States;
-import frc.states.SuperstructureStatePreset;
 
 public class SuperstructureStateManager{
     

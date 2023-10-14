@@ -4,10 +4,10 @@
 
 package frc.robot.Constants;
 
-import frc.states.States;
-import frc.states.SuperstructureStatePreset;
 import frc.lib.util.BetterRangeMap;
 import frc.robot.Superstructure.SuperstructureStateManager;
+import frc.robot.states.States;
+import frc.robot.states.SuperstructureStatePreset;
 import frc.robot.util.Gains;
 
 public final class SC {
