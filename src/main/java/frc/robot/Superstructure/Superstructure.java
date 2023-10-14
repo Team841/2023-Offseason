@@ -1,22 +1,26 @@
 package frc.robot.Superstructure;
 
 import edu.wpi.first.util.sendable.Sendable;
-import frc.lib.util.BetterArrayList;
-
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SC;
-import frc.lib.util.BioFalcon;
 import frc.robot.Constants.Constants;
+import frc.robot.Superstructure.factory.SuperstructureFactoryBeta;
+import frc.robot.util.BetterArrayList;
+import frc.robot.util.BioFalcon;
+import frc.states.States;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.google.common.util.concurrent.Service.State;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 public class Superstructure extends SubsystemBase {
+
+    CommandScheduler scheduler = CommandScheduler.getInstance();
 
     public final BioFalcon shoulderMotor_starboard = new BioFalcon(Constants.CANid.shoulderMotor_Starboard, false, false, SC.Shoulder.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
     public final BioFalcon shoulderMotor_port = new BioFalcon(Constants.CANid.shoulderMotor_Port, false, true, SC.Shoulder.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
@@ -25,26 +29,34 @@ public class Superstructure extends SubsystemBase {
     DigitalInput ElbowIndexSensor = new DigitalInput(SC.Elbow.IndexChannel);
     DigitalInput ShoulderIndexSensor = new DigitalInput(SC.Shoulder.IndexChannel);
 
-    enum GamePiece {
-        Cone,
-        Cube,
-        Empty
-    }
-
     private States state = States.Home;
 
     public boolean canMove = false;
 
     public SC.PresetPositions rangePreset = new SC.PresetPositions();
+    
+    public SuperstructureStateManager stateManager = new SuperstructureStateManager();
 
     public Superstructure() {
         shoulderMotor_port.follow(shoulderMotor_starboard);
+
+        stateManager.addPreset(SC.PresetPositions.HomePreset);
+        stateManager.addPreset(SC.PresetPositions.IntermediatePreset);
+        stateManager.addPreset(SC.PresetPositions.PreExtractInPreset);
+        stateManager.addPreset(SC.PresetPositions.MidScoreCubePreset);
+        stateManager.addPreset(SC.PresetPositions.HighScoreCubePreset);
+        stateManager.addPreset(SC.PresetPositions.HighScoreConePreset);
+        stateManager.addPreset(SC.PresetPositions.MidScoreConePreset);
+        stateManager.addPreset(SC.PresetPositions.GroundPreset);
+
     }
 
     @Override
     public void periodic() {
 
-        inTolerance(getJointAngles());
+        stateManager.updateState(getJointAngles()[0], getJointAngles()[1]);
+        
+        this.state = SC.superstructureState;
 
         if (this.state == States.Home || Constants.isDisabled) {
             if (getElbowIndexSensor()) {
@@ -60,6 +72,12 @@ public class Superstructure extends SubsystemBase {
         }
 
         updateShuffleBoard();
+        // checkPickedUp();
+        // SC.superstructureState = this.state;
+        // SC.superstructureState = this.state == States.Ground ? States.Ground : States.Nothing;
+        //if (this.state == States.Ground){
+        //    SC.superstructureState = States.Ground;
+        //} 
     }
 
     ///////////////////////////////// Commands ///////////////////////////////
@@ -164,7 +182,8 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putBoolean("Shoulder Index", getShoulderIndexSensor());
         SmartDashboard.putBoolean("Elbow Index", getElbowIndexSensor());
 
-        SmartDashboard.putString("State", state.toString());
+        SmartDashboard.putString("State", this.state.toString());
+        SmartDashboard.putString("Sc.State", SC.superstructureState.toString());
 
         SmartDashboard.putBoolean("Ready to move to new state", canMove);
 
@@ -174,25 +193,10 @@ public class Superstructure extends SubsystemBase {
         // SmartDashboard.putString("Elbow State", SC.PresetPositions.elbowRange.get(getJointAngles()[1]).toString());
     }
 
-    public void inTolerance(double[] angles) {
-
-        BetterArrayList<States> ShoulderRanges = SC.PresetPositions.shoulderRange.getAll(angles[0]);
-        BetterArrayList<States> ElbowRanges = SC.PresetPositions.shoulderRange.getAll(angles[1]);
-
-        if (ShoulderRanges == null || ElbowRanges == null) {
-            this.state = States.Nothing;
-            return;
+    public void checkPickedUp() {
+        if (SC.superstructureState == States.Home){
+            scheduler.schedule(new SuperstructureFactoryBeta(this).moveHome());
         }
-
-        States goodState = States.Nothing;
-
-        for (States shoulderValueState : ShoulderRanges) {
-            if (ElbowRanges.contains(shoulderValueState)) {
-                goodState = shoulderValueState;
-            }
-        }
-
-        this.state = goodState;
     }
 
     /////////////////////////////// End Periodic  ///////////////////////////////

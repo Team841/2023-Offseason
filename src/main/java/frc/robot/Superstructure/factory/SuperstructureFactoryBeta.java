@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.SC;
-import frc.robot.Superstructure.States;
 import frc.robot.Superstructure.Superstructure;
-import frc.robot.Superstructure.setJointAngles;
+import frc.robot.Superstructure.commands.setJointAngles;
+import frc.states.States;
 
 public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
 

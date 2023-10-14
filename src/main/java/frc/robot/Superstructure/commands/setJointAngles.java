@@ -1,6 +1,7 @@
-package frc.robot.Superstructure;
+package frc.robot.Superstructure.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Superstructure.Superstructure;
 
 public class setJointAngles extends CommandBase {
 

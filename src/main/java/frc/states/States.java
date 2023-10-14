@@ -1,4 +1,4 @@
-package frc.robot.Superstructure;
+package frc.states;
 
 public enum States {
     Home,

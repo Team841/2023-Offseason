@@ -8,6 +8,7 @@ package frc.robot.Constants;
 public final class Constants {
 
     public static boolean isDisabled = true;
+    public static boolean inTune = false;
 
     public static final class OI{
         public static final int driverPortLeft = 0; //controller USB port 0

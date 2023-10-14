@@ -4,8 +4,11 @@ import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
 
+import frc.robot.util.BetterArrayList;
+
 import java.util.Map;
 
+@Deprecated
 public class BetterRangeMap<K extends Comparable<K>, V>{
 
     private final RangeMap<K, V> internalMap;

@@ -1,8 +1,12 @@
-package frc.lib.util;
+package frc.robot.util;
 
 import java.util.ArrayList;
 
 public class BetterArrayList<E> extends ArrayList<E> {
+
+    public BetterArrayList(){
+        super();
+    }
 
     /**
      * Gets the union of this ArrayList and another ArrayList.

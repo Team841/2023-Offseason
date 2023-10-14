@@ -1,7 +1,7 @@
 /**
  *  Class that organizes gains used when assigning values to slots
  */
-package frc.lib.util;
+package frc.robot.util;
 
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import com.google.common.collect.Range;
 
+import frc.robot.util.BetterArrayList;
+
 @Deprecated
 public class RangeMap<K extends Comparable<K>, V> {
 
