@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import frc.robot.Constants.SC;
-import frc.robot.Superstructure.GamePiece;
 import frc.robot.states.States;
 
 public class Intake extends SubsystemBase {

@@ -1,8 +1,6 @@
 package frc.robot.Superstructure.factory;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 @Deprecated
 abstract class AbstractFactoryLogic implements AbstractFactoryMovement {

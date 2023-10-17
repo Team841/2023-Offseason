@@ -1,12 +1,8 @@
 package frc.robot.Superstructure.factory;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.SC;
 import frc.robot.Superstructure.Superstructure;
@@ -16,8 +12,6 @@ import frc.robot.states.States;
 public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
 
     private final Superstructure superstructure;
-
-    private static final CommandScheduler scheduler = CommandScheduler.getInstance();
 
     public SuperstructureFactoryBeta(Superstructure _superstructure) {
         this.superstructure = _superstructure;
