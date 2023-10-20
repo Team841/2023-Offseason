@@ -4,6 +4,7 @@
 
 package frc.robot.Constants;
 
+import frc.robot.Superstructure.SuperstructureStateManager;
 import frc.robot.states.States;
 import frc.robot.states.SuperstructureStatePreset;
 import frc.robot.util.Gains;
@@ -19,6 +20,8 @@ public final class SC {
 
     public static States superstructureState = States.Nothing; 
 
+    public static final SuperstructureStateManager stateManager = new SuperstructureStateManager();
+    
     public static final class Shoulder{
 
         public static final double GearRatio = 0.0037; // 1/240;
@@ -94,7 +97,5 @@ public final class SC {
         public static final SuperstructureStatePreset HighScoreConePreset = new SuperstructureStatePreset(States.TopScoreCone, HighScoreCone[0], HighScoreCone[1], Shoulder.tolerance, Elbow.tolerance);
         public static final SuperstructureStatePreset MidScoreConePreset = new SuperstructureStatePreset(States.MidScoreCone, MidScoreCone[0], MidScoreCone[1], Shoulder.tolerance, Elbow.tolerance);
         public static final SuperstructureStatePreset GroundPreset = new SuperstructureStatePreset(States.Ground, Ground[0], Ground[1], Shoulder.tolerance, Elbow.tolerance);
-
     }
-
 }

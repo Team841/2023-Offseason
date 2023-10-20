@@ -13,12 +13,11 @@ public class SuperstructureStateManager{
         this.presets = new BetterArrayList<SuperstructureStatePreset>();
     }
 
-    public boolean addPreset(SuperstructureStatePreset preset){
+    public void addPreset(SuperstructureStatePreset preset){
         try{
             this.presets.add(preset);
-            return true;
         } catch (Exception e){
-            return false;
+            System.out.println("Error adding preset to SuperstructureStateManager. Returning false.");
         }
     }
 

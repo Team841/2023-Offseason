@@ -7,6 +7,7 @@ package frc.robot.Constants;
 
 public final class Constants {
 
+    public static final String SubsystemManifest = null;
     public static boolean isDisabled = true;
     public static boolean inTune = false;
 

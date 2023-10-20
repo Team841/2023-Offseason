@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.Constants;
+import frc.robot.Constants.SC;
+import frc.robot.Constants.SubsystemManifest;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -13,11 +15,22 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+
+    SC.stateManager.addPreset(SC.PresetPositions.HomePreset);
+    SC.stateManager.addPreset(SC.PresetPositions.IntermediatePreset);
+    SC.stateManager.addPreset(SC.PresetPositions.PreExtractInPreset);
+    SC.stateManager.addPreset(SC.PresetPositions.MidScoreCubePreset);
+    SC.stateManager.addPreset(SC.PresetPositions.HighScoreCubePreset);
+    SC.stateManager.addPreset(SC.PresetPositions.HighScoreConePreset);
+    SC.stateManager.addPreset(SC.PresetPositions.MidScoreConePreset);
+    SC.stateManager.addPreset(SC.PresetPositions.GroundPreset);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    
+    SC.stateManager.updateState(SubsystemManifest.superstructure.getJointAngles()[0], SubsystemManifest.superstructure.getJointAngles()[1]);
   }
 
   @Override

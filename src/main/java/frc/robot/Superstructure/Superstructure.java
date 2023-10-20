@@ -36,16 +36,6 @@ public class Superstructure extends SubsystemBase {
 
     public Superstructure() {
         shoulderMotor_port.follow(shoulderMotor_starboard);
-
-        stateManager.addPreset(SC.PresetPositions.HomePreset);
-        stateManager.addPreset(SC.PresetPositions.IntermediatePreset);
-        stateManager.addPreset(SC.PresetPositions.PreExtractInPreset);
-        stateManager.addPreset(SC.PresetPositions.MidScoreCubePreset);
-        stateManager.addPreset(SC.PresetPositions.HighScoreCubePreset);
-        stateManager.addPreset(SC.PresetPositions.HighScoreConePreset);
-        stateManager.addPreset(SC.PresetPositions.MidScoreConePreset);
-        stateManager.addPreset(SC.PresetPositions.GroundPreset);
-
     }
 
     @Override

@@ -14,14 +14,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Drive.*;
 import frc.robot.Superstructure.*;
 import frc.robot.Constants.Constants;
+import frc.robot.Constants.SubsystemManifest;
 import frc.robot.Superstructure.factory.SuperstructureFactoryBeta;
 
 public class RobotContainer {
 
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Superstructure superstructure = new Superstructure();
-  private final SuperstructureFactoryBeta factory = new SuperstructureFactoryBeta(superstructure);
-  private final Intake intake = new Intake();
+  private final Drivetrain drivetrain = SubsystemManifest.drivetrain;
+  private final Superstructure superstructure = SubsystemManifest.superstructure;
+  private final SuperstructureFactoryBeta factory = SubsystemManifest.factory;
+  private final Intake intake = SubsystemManifest.intake;
 
   private final CommandXboxController m_codriverCtrl = new CommandXboxController(Constants.OI.codriverPort);
   private final CommandPS4Controller m_driverCtrl = new CommandPS4Controller(Constants.OI.driverPortLeft);
