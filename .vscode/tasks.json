@@ -1,0 +1,19 @@
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "spotlessApply",
+            "type": "shell",
+            "command": "./gradlew spotlessApply", // -Dorg.gradle.java.home='/Users/david/wpilib/2023/jdk'
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

@@ -4,4 +4,4 @@
 
 ## Structure
 
-- [`README.md`](./src/main/java/frc/robot/README.md) &larr; Look at this.
+- [`README.md`](./src/main/java/com/team841/offseason2023/README.md) &larr; Look at this.
