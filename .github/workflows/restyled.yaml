@@ -1,9 +1,0 @@
-enable: true
-
-auto: true
-
-restylers_version: stable
-
-restylers:
-- "*"
-- google-java-format
