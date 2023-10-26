@@ -1,11 +1,11 @@
 package com.team841.offseason2023;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import com.team841.offseason2023.Constants.Constants;
 import com.team841.offseason2023.Constants.SC;
 import com.team841.offseason2023.Constants.SubsystemManifest;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -29,8 +29,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    
-    SC.stateManager.updateState(SubsystemManifest.superstructure.getJointAngles()[0], SubsystemManifest.superstructure.getJointAngles()[1]);
+
+    SC.stateManager.updateState(
+        SubsystemManifest.superstructure.getJointAngles()[0],
+        SubsystemManifest.superstructure.getJointAngles()[1]);
   }
 
   @Override

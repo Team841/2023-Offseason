@@ -4,6 +4,11 @@
 
 package com.team841.offseason2023;
 
+import com.team841.offseason2023.Constants.Constants;
+import com.team841.offseason2023.Constants.SubsystemManifest;
+import com.team841.offseason2023.Drive.*;
+import com.team841.offseason2023.Superstructure.*;
+import com.team841.offseason2023.Superstructure.factory.SuperstructureFactoryBeta;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -11,11 +16,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import com.team841.offseason2023.Drive.*;
-import com.team841.offseason2023.Superstructure.*;
-import com.team841.offseason2023.Constants.Constants;
-import com.team841.offseason2023.Constants.SubsystemManifest;
-import com.team841.offseason2023.Superstructure.factory.SuperstructureFactoryBeta;
 
 public class RobotContainer {
 
@@ -24,8 +24,10 @@ public class RobotContainer {
   private final SuperstructureFactoryBeta factory = SubsystemManifest.factory;
   private final Intake intake = SubsystemManifest.intake;
 
-  private final CommandXboxController m_codriverCtrl = new CommandXboxController(Constants.OI.codriverPort);
-  private final CommandPS4Controller m_driverCtrl = new CommandPS4Controller(Constants.OI.driverPortLeft);
+  private final CommandXboxController m_codriverCtrl =
+      new CommandXboxController(Constants.OI.codriverPort);
+  private final CommandPS4Controller m_driverCtrl =
+      new CommandPS4Controller(Constants.OI.driverPortLeft);
 
   // Create the button commands
 
@@ -48,19 +50,20 @@ public class RobotContainer {
   private final Trigger cubeIntakeToggle = m_codriverCtrl.a();
 
   public RobotContainer() {
-    
+
     configureBindings();
     drivetrain.setDefaultCommand(
-      new RunCommand(() -> drivetrain.Drive(m_driverCtrl.getRightX(), m_driverCtrl.getLeftY()),drivetrain));
+        new RunCommand(
+            () -> drivetrain.Drive(m_driverCtrl.getRightX(), m_driverCtrl.getLeftY()), drivetrain));
   }
-    
+
   private void configureBindings() {
 
     /* https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj2/command/button/Button.html */
 
     /* Driver Commands */
-    //Quick turn
-    qT.onTrue(new InstantCommand(drivetrain::setQuickTurn, drivetrain));  
+    // Quick turn
+    qT.onTrue(new InstantCommand(drivetrain::setQuickTurn, drivetrain));
     qT.onFalse(new InstantCommand(drivetrain::resetQuickTurn, drivetrain));
     /* final Trigger AutoBalance = m_driverCtrl.cross();
       AutoBalance.whileTrue(new AutoBalance(drivetrain));
@@ -76,10 +79,10 @@ public class RobotContainer {
 
     // Intake
     coneIntakeToggle.onTrue(new InstantCommand(intake::toggleIntakeIn, intake));
-    cubeIntakeToggle.onTrue(new InstantCommand(intake::toggleIntakeOut, intake)); 
+    cubeIntakeToggle.onTrue(new InstantCommand(intake::toggleIntakeOut, intake));
 
     // Movement
-    MoveHome.onTrue(factory.moveHome()); 
+    MoveHome.onTrue(factory.moveHome());
     MoveGround.onTrue(factory.moveGround());
     MoveMidScoreCube.onTrue(factory.moveMidScoreCube());
     MoveMidScoreCone.onTrue(factory.moveMidScoreCone());

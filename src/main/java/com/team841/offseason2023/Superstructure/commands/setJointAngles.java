@@ -1,7 +1,7 @@
 package com.team841.offseason2023.Superstructure.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.team841.offseason2023.Superstructure.Superstructure;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class setJointAngles extends CommandBase {
 
@@ -34,6 +34,7 @@ public class setJointAngles extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return superstructure.isElbowAtPosition(this.goalAngles[1]) && superstructure.isShoulderAtPosition(this.goalAngles[0]);
+    return superstructure.isElbowAtPosition(this.goalAngles[1])
+        && superstructure.isShoulderAtPosition(this.goalAngles[0]);
   }
 }

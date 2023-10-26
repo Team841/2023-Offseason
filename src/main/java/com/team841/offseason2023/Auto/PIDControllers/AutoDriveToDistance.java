@@ -1,15 +1,14 @@
 package com.team841.offseason2023.Auto.PIDControllers;
 
-import java.lang.Math;
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import com.team841.offseason2023.Drive.Drivetrain;
 import com.team841.offseason2023.Constants.Drive;
+import com.team841.offseason2023.Drive.Drivetrain;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class AutoDriveToDistance extends CommandBase {
-  
+
   /** Creates a new AutoDriveToDistance. */
   private Drivetrain m_subsystem;
+
   private double m_goal_distance;
 
   public AutoDriveToDistance(Drivetrain subsystem, double goal_distance) {
@@ -17,7 +16,7 @@ public class AutoDriveToDistance extends CommandBase {
     m_goal_distance = goal_distance;
     addRequirements(m_subsystem);
   }
-    
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -39,9 +38,9 @@ public class AutoDriveToDistance extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() { 
+  public boolean isFinished() {
 
-    if(Math.abs(m_subsystem.getPIDdistanceError()) <= Drive.Drivetrain.distance_tolerance){
+    if (Math.abs(m_subsystem.getPIDdistanceError()) <= Drive.Drivetrain.distance_tolerance) {
       return true;
     }
     return false;

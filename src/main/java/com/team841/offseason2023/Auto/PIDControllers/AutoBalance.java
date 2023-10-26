@@ -1,16 +1,17 @@
 package com.team841.offseason2023.Auto.PIDControllers;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.team841.offseason2023.Constants.Drive;
 import com.team841.offseason2023.Drive.Drivetrain;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class AutoBalance extends CommandBase {
-  
+
   /** Creates a new AutoBalance. */
-  private Drivetrain m_subsystem ;
+  private Drivetrain m_subsystem;
+
   public AutoBalance(Drivetrain subsytem) {
-    m_subsystem = subsytem ; 
+    m_subsystem = subsytem;
     addRequirements(m_subsystem);
   }
 
@@ -28,38 +29,34 @@ public class AutoBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double output = m_subsystem.balance_pid.calculate (m_subsystem.GetRobotAngle());
-    output = MathUtil.clamp(output, -0.2,  0.2);
-    if (Math.abs(m_subsystem.GetRobotAngle()) > 7.0){
-      output = MathUtil.clamp(output, -0.2,  0.2);
-    } 
-    else
-    {
-      output = 0; 
+    double output = m_subsystem.balance_pid.calculate(m_subsystem.GetRobotAngle());
+    output = MathUtil.clamp(output, -0.2, 0.2);
+    if (Math.abs(m_subsystem.GetRobotAngle()) > 7.0) {
+      output = MathUtil.clamp(output, -0.2, 0.2);
+    } else {
+      output = 0;
     }
-    
+
     m_subsystem.setLeftRight(output, output);
 
-    if (Math.abs(m_subsystem.GetRobotAngle()) < 1.5){
+    if (Math.abs(m_subsystem.GetRobotAngle()) < 1.5) {
       m_subsystem.BrakeOn();
-    }
-    else {
+    } else {
       m_subsystem.BrakeOff();
     }
-  } 
+  }
 
-    
-/*
- Make the robot recognize that when it's angle reaches/ starts to move,  decrease its speed and wait.
- */
-    /*double SensorData ; 
-    m_subsystem.setDrivetrainBrakeMode(true);
-    SensorData = m_subsystem.GetRobotAngle() ;
-    double kp = 0.0110; 
-    double ref = 0 ; 
-    double error = ref - SensorData ; 
-    m_subsystem.setLeftRight (error*kp,error*kp) ; */
-  //}
+  /*
+  Make the robot recognize that when it's angle reaches/ starts to move,  decrease its speed and wait.
+  */
+  /*double SensorData ;
+  m_subsystem.setDrivetrainBrakeMode(true);
+  SensorData = m_subsystem.GetRobotAngle() ;
+  double kp = 0.0110;
+  double ref = 0 ;
+  double error = ref - SensorData ;
+  m_subsystem.setLeftRight (error*kp,error*kp) ; */
+  // }
 
   // Called once the command ends or is interrupted.
   @Override

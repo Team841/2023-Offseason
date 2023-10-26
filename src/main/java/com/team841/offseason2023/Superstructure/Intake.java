@@ -4,11 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team841.offseason2023.Constants.Constants;
 import com.team841.offseason2023.Constants.SC;
 import com.team841.offseason2023.states.States;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
@@ -19,15 +18,14 @@ public class Intake extends SubsystemBase {
   // public GamePiece gamePiece = GamePiece.Empty;
 
   public Intake() {
-    
+
     IntakeMotor.configFactoryDefault();
     IntakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
     IntakeMotor.setNeutralMode(NeutralMode.Brake);
-    
   }
-  
+
   public void toggleIntakeIn() {
-    if(IntakeMotor.getMotorOutputPercent()==0){
+    if (IntakeMotor.getMotorOutputPercent() == 0) {
       this.IntakeMotor.set(ControlMode.PercentOutput, SC.Intake.teleopPower);
       this.thresh = SC.Intake.ConeCThresh;
     } else {
@@ -37,7 +35,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void toggleIntakeOut() {
-    if(IntakeMotor.getMotorOutputPercent()==0){
+    if (IntakeMotor.getMotorOutputPercent() == 0) {
       this.IntakeMotor.set(ControlMode.PercentOutput, -SC.Intake.teleopPower);
       this.thresh = SC.Intake.CubeCThresh;
     } else {
@@ -49,18 +47,17 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (thresh >= 0.0 && SC.superstructureState == States.Ground && pickedUp() != GamePiece.Empty){
+    if (thresh >= 0.0 && SC.superstructureState == States.Ground && pickedUp() != GamePiece.Empty) {
       SC.superstructureState = States.Home;
     }
   }
 
-  public GamePiece pickedUp(){
+  public GamePiece pickedUp() {
 
     if (IntakeMotor.getSupplyCurrent() < thresh) {
       return GamePiece.Empty;
     } else {
       return this.thresh == SC.Intake.CubeCThresh ? GamePiece.Cube : GamePiece.Cone;
     }
-
   }
 }

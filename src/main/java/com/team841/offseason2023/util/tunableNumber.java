@@ -1,45 +1,44 @@
 package com.team841.offseason2023.util;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.team841.offseason2023.Constants.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class tunableNumber {
-    
-    public static final String tabKey = "Tunable Numbers";
 
-    private final String key;
-    private double defaultValue;
-    private double oldValue = defaultValue;
-    
-    public tunableNumber(String DashboardKey){
-        this.key = tabKey + "/" + DashboardKey;
+  public static final String tabKey = "Tunable Numbers";
+
+  private final String key;
+  private double defaultValue;
+  private double oldValue = defaultValue;
+
+  public tunableNumber(String DashboardKey) {
+    this.key = tabKey + "/" + DashboardKey;
+  }
+
+  public tunableNumber(String DashboardKey, double defaultValue) {
+    this(DashboardKey);
+    setDefault(defaultValue);
+  }
+
+  public void setDefault(double defaultValue) {
+    this.defaultValue = defaultValue;
+    if (Constants.inTune) {
+      SmartDashboard.putNumber(key, defaultValue);
+    } else {
+      SmartDashboard.clearPersistent(key);
     }
+  }
 
-    public tunableNumber(String DashboardKey, double defaultValue){
-        this(DashboardKey);
-        setDefault(defaultValue);
+  public double get() {
+    return 0; // C.inTune ? SmartDashboard.getNumber(key, defaultValue) : defaultValue;
+  }
+
+  public boolean hasChanged() {
+    double currentValue = get();
+    if (currentValue != oldValue) {
+      oldValue = currentValue;
+      return true;
     }
-
-    public void setDefault(double defaultValue){
-        this.defaultValue = defaultValue;
-        if (Constants.inTune){
-            SmartDashboard.putNumber(key, defaultValue);
-        } else {
-            SmartDashboard.clearPersistent(key);
-        }
-    }
-
-    public double get(){
-        return 0; //C.inTune ? SmartDashboard.getNumber(key, defaultValue) : defaultValue;
-    }
-
-    public boolean hasChanged() {
-        double currentValue = get();
-        if (currentValue != oldValue) {
-            oldValue = currentValue;
-            return true;
-        }
-        return false;
-    }
-
+    return false;
+  }
 }
