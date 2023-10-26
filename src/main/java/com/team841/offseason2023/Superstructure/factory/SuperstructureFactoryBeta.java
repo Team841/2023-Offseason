@@ -21,7 +21,7 @@ public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
     return new SequentialCommandGroup(
             new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
             new setJointAngles(this.superstructure, SC.PresetPositions.Ground))
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
         .handleInterrupt(this.superstructure::stopJoints)
         .unless(
             () ->
@@ -34,7 +34,7 @@ public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
             new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
             new setJointAngles(this.superstructure, SC.PresetPositions.MidScoreCube))
         .handleInterrupt(this.superstructure::stopJoints)
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
         .unless(
             () ->
                 this.superstructure.getState() == States.Nothing
@@ -46,7 +46,7 @@ public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
             new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
             new setJointAngles(this.superstructure, SC.PresetPositions.MidScoreCone))
         .handleInterrupt(this.superstructure::stopJoints)
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
         .unless(
             () ->
                 this.superstructure.getState() == States.Nothing
@@ -58,7 +58,7 @@ public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
             new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
             new setJointAngles(this.superstructure, SC.PresetPositions.HighScoreCube))
         .handleInterrupt(this.superstructure::stopJoints)
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
         .unless(
             () ->
                 this.superstructure.getState() == States.Nothing
@@ -70,7 +70,7 @@ public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
             new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
             new setJointAngles(this.superstructure, SC.PresetPositions.HighScoreCone))
         .handleInterrupt(this.superstructure::stopJoints)
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
         .unless(
             () ->
                 this.superstructure.getState() == States.Nothing
@@ -83,13 +83,13 @@ public class SuperstructureFactoryBeta extends AbstractFactoryLogicBeta {
                 new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
                 new setJointAngles(this.superstructure, SC.PresetPositions.Home))
             .handleInterrupt(this.superstructure::stopJoints)
-            .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming),
+            .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf),
         new SequentialCommandGroup( // to home from high
                 new setJointAngles(this.superstructure, SC.PresetPositions.PreExtractIn),
                 new setJointAngles(this.superstructure, SC.PresetPositions.Intermediate),
                 new setJointAngles(this.superstructure, SC.PresetPositions.Home))
             .handleInterrupt(this.superstructure::stopJoints)
-            .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming),
+            .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf),
         () ->
             !((this.superstructure.getState() == States.TopScoreCone
                 || this.superstructure.getState() == States.TopScoreCube)));
