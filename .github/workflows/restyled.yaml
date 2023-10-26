@@ -7,3 +7,4 @@ restylers_version: stable
 restylers:
 - "*"
 - google-java-format
+- !"clang-format"
