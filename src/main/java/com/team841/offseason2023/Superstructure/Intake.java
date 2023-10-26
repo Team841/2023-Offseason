@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.team841.offseason2023.Constants.Constants;
 import com.team841.offseason2023.Constants.SC;
+import com.team841.offseason2023.Constants.SubsystemManifest;
+import com.team841.offseason2023.Superstructure.factory.SuperstructureFactoryBeta;
 import com.team841.offseason2023.states.States;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -13,7 +15,11 @@ public class Intake extends SubsystemBase {
 
   private final TalonFX IntakeMotor = new TalonFX(Constants.CANid.IntakeTalon);
 
+  private final SuperstructureFactoryBeta factory = SubsystemManifest.factory;
+
   private Double thresh = 0.0;
+
+  private boolean transition = false;
 
   // public GamePiece gamePiece = GamePiece.Empty;
 
@@ -28,9 +34,11 @@ public class Intake extends SubsystemBase {
     if (IntakeMotor.getMotorOutputPercent() == 0) {
       this.IntakeMotor.set(ControlMode.PercentOutput, SC.Intake.teleopPower);
       this.thresh = SC.Intake.ConeCThresh;
+      transition = false;
     } else {
       IntakeMotor.set(ControlMode.PercentOutput, 0);
       this.thresh = 0.0;
+      transition = true;
     }
   }
 
@@ -38,17 +46,24 @@ public class Intake extends SubsystemBase {
     if (IntakeMotor.getMotorOutputPercent() == 0) {
       this.IntakeMotor.set(ControlMode.PercentOutput, -SC.Intake.teleopPower);
       this.thresh = SC.Intake.CubeCThresh;
+      transition = false;
     } else {
       this.IntakeMotor.set(ControlMode.PercentOutput, 0);
       this.thresh = 0.0;
+      transition = true;
     }
   }
 
   @Override
   public void periodic() {
 
-    if (thresh >= 0.0 && SC.superstructureState == States.Ground && pickedUp() != GamePiece.Empty) {
-      SC.superstructureState = States.Home;
+    thresh =
+        IntakeMotor.getMotorOutputPercent() > 0 ? SC.Intake.ConeCThresh : SC.Intake.CubeCThresh;
+
+    if (SC.superstructureState == States.Ground
+        && !transition
+        && IntakeMotor.getMotorOutputPercent() < thresh) {
+      factory.moveHome().schedule();
     }
   }
 
