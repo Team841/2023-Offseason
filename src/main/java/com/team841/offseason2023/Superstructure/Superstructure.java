@@ -57,16 +57,12 @@ public class Superstructure extends SubsystemBase {
 
   public SC.PresetPositions rangePreset = new SC.PresetPositions();
 
-  public SuperstructureStateManager stateManager = new SuperstructureStateManager();
-
   public Superstructure() {
     shoulderMotor_port.follow(shoulderMotor_starboard);
   }
 
   @Override
   public void periodic() {
-
-    stateManager.updateState(getJointAngles()[0], getJointAngles()[1]);
 
     this.state = SC.superstructureState;
 

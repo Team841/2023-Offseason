@@ -34,7 +34,7 @@ public class SuperstructureStateManager {
 
     if (possibleStates.size() == 1) {
       SC.superstructureState = possibleStates.get(0).getState();
-    } else if (possibleStates.size() == 0) {
+    } else if (possibleStates.isEmpty()) {
       SC.superstructureState = States.Nothing;
     } else {
       System.out.println("Multiple states found for current position. Returning false.");

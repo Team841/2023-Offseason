@@ -19,7 +19,9 @@ public class Intake extends SubsystemBase {
 
   private Double thresh = 0.0;
 
-  private boolean transition = false;
+  private boolean notTransition = true;
+
+  private Double timer = Double.NaN;
 
   // public GamePiece gamePiece = GamePiece.Empty;
 
@@ -30,39 +32,56 @@ public class Intake extends SubsystemBase {
     IntakeMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void toggleIntakeIn() {
+  public void toggleIntakeIn() { // Cone in
     if (IntakeMotor.getMotorOutputPercent() == 0) {
       this.IntakeMotor.set(ControlMode.PercentOutput, SC.Intake.teleopPower);
       this.thresh = SC.Intake.ConeCThresh;
-      transition = false;
+      this.timer = Double.NaN;
+    } else if (IntakeMotor.getMotorOutputPercent() < 0) {
+      this.IntakeMotor.set(ControlMode.PercentOutput, SC.Intake.teleopPower);
+      this.thresh = SC.Intake.ConeCThresh;
+      this.timer = 0.0;
+      this.notTransition = false;
     } else {
       IntakeMotor.set(ControlMode.PercentOutput, 0);
       this.thresh = 0.0;
-      transition = true;
+      this.timer = Double.NaN;
     }
   }
 
-  public void toggleIntakeOut() {
+  public void toggleIntakeOut() { // cone out
     if (IntakeMotor.getMotorOutputPercent() == 0) {
       this.IntakeMotor.set(ControlMode.PercentOutput, -SC.Intake.teleopPower);
       this.thresh = SC.Intake.CubeCThresh;
-      transition = false;
+      this.timer = Double.NaN;
+    } else if (IntakeMotor.getMotorOutputPercent() > 0) {
+      this.IntakeMotor.set(ControlMode.PercentOutput, -SC.Intake.teleopPower);
+      this.thresh = SC.Intake.ConeCThresh;
+      this.timer = 0.0;
+      this.notTransition = false;
     } else {
       this.IntakeMotor.set(ControlMode.PercentOutput, 0);
       this.thresh = 0.0;
-      transition = true;
+      this.timer = Double.NaN;
     }
   }
 
   @Override
   public void periodic() {
 
-    thresh =
-        IntakeMotor.getMotorOutputPercent() > 0 ? SC.Intake.ConeCThresh : SC.Intake.CubeCThresh;
+    if (this.timer >= 0.0){
+      timer += 1.0;
+
+      if (timer >= 20.0){
+        notTransition = true;
+        timer = Double.NaN;
+        return;
+      }
+    }
 
     if (SC.superstructureState == States.Ground
-        && !transition
-        && IntakeMotor.getMotorOutputPercent() < thresh) {
+        && notTransition
+        && IntakeMotor.getSupplyCurrent() > thresh) {
       factory.moveHome().schedule();
     }
   }
