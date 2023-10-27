@@ -18,35 +18,15 @@ public class Superstructure extends SubsystemBase {
   CommandScheduler scheduler = CommandScheduler.getInstance();
 
   public final BioFalcon shoulderMotor_starboard =
-      new BioFalcon(
-          Constants.CANid.shoulderMotor_Starboard,
-          false,
-          false,
-          SC.Shoulder.setupGains,
-          SC.kPIDLoopIdx,
-          SC.kTimeoutMs,
-          SC.fxOutputs,
-          true);
-  public final BioFalcon shoulderMotor_port =
-      new BioFalcon(
-          Constants.CANid.shoulderMotor_Port,
-          false,
-          true,
-          SC.Shoulder.setupGains,
-          SC.kPIDLoopIdx,
-          SC.kTimeoutMs,
-          SC.fxOutputs,
-          true);
-  public final BioFalcon elbowMotor =
-      new BioFalcon(
-          Constants.CANid.elbowMotor,
-          false,
-          false,
-          SC.Elbow.setupGains,
-          SC.kPIDLoopIdx,
-          SC.kTimeoutMs,
-          SC.fxOutputs,
-          true);
+      new BioFalcon(Constants.CANid.shoulderMotor_Starboard, false, false,
+                    SC.Shoulder.setupGains, SC.kPIDLoopIdx, SC.kTimeoutMs,
+                    SC.fxOutputs, true);
+  public final BioFalcon shoulderMotor_port = new BioFalcon(
+      Constants.CANid.shoulderMotor_Port, false, true, SC.Shoulder.setupGains,
+      SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
+  public final BioFalcon elbowMotor = new BioFalcon(
+      Constants.CANid.elbowMotor, false, false, SC.Elbow.setupGains,
+      SC.kPIDLoopIdx, SC.kTimeoutMs, SC.fxOutputs, true);
 
   DigitalInput ElbowIndexSensor = new DigitalInput(SC.Elbow.IndexChannel);
   DigitalInput ShoulderIndexSensor = new DigitalInput(SC.Shoulder.IndexChannel);
@@ -82,26 +62,27 @@ public class Superstructure extends SubsystemBase {
     updateShuffleBoard();
     // checkPickedUp();
     // SC.superstructureState = this.state;
-    // SC.superstructureState = this.state == States.Ground ? States.Ground : States.Nothing;
-    // if (this.state == States.Ground){
+    // SC.superstructureState = this.state == States.Ground ? States.Ground :
+    // States.Nothing; if (this.state == States.Ground){
     //    SC.superstructureState = States.Ground;
     // }
   }
 
   ///////////////////////////////// Commands ///////////////////////////////
 
-  public void setInput(States state) {
-    this.state = state;
-  }
+  public void setInput(States state) { this.state = state; }
 
   ///////////////////////////////// End Commands ///////////////////////////////
 
-  /////////////////////////////// Control Methods ///////////////////////////////
+  /////////////////////////////// Control Methods
+  //////////////////////////////////
 
   public void moveJointAngles(double[] angles) {
     shoulderMotor_starboard.set(
-        TalonFXControlMode.Position, angleToCounts(angles[0], SC.Shoulder.GearRatio));
-    elbowMotor.set(TalonFXControlMode.Position, angleToCounts(angles[1], SC.Elbow.GearRatio));
+        TalonFXControlMode.Position,
+        angleToCounts(angles[0], SC.Shoulder.GearRatio));
+    elbowMotor.set(TalonFXControlMode.Position,
+                   angleToCounts(angles[1], SC.Elbow.GearRatio));
   }
 
   public void stopJoints() {
@@ -129,7 +110,8 @@ public class Superstructure extends SubsystemBase {
     elbowMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  /////////////////////////////// End Control Methods ///////////////////////////////
+  /////////////////////////////// End Control Methods
+  //////////////////////////////////
 
   /////////////////////////////// Math ///////////////////////////////
 
@@ -146,44 +128,41 @@ public class Superstructure extends SubsystemBase {
   /////////////////////////////// Getters ///////////////////////////////
 
   public boolean isShoulderAtPosition(double angle) {
-    return (Math.abs(
-            countsToAngle(
-                    shoulderMotor_starboard.getSelectedSensorPosition(), SC.Shoulder.GearRatio)
-                - angle)
-        <= Math.abs(SC.Shoulder.tolerance));
+    return (Math.abs(countsToAngle(
+                         shoulderMotor_starboard.getSelectedSensorPosition(),
+                         SC.Shoulder.GearRatio) -
+                     angle) <= Math.abs(SC.Shoulder.tolerance));
   }
 
   public boolean isElbowAtPosition(double angle) {
-    return (Math.abs(
-            countsToAngle(elbowMotor.getSelectedSensorPosition(), SC.Elbow.GearRatio) - angle)
-        <= Math.abs(SC.Elbow.tolerance));
+    return (Math.abs(countsToAngle(elbowMotor.getSelectedSensorPosition(),
+                                   SC.Elbow.GearRatio) -
+                     angle) <= Math.abs(SC.Elbow.tolerance));
   }
 
   public boolean isAtPosition(double[] angles) {
-    SmartDashboard.putBoolean("shoulder in Position?", isShoulderAtPosition(angles[0]));
-    SmartDashboard.putBoolean("elbow in Position?", isElbowAtPosition(angles[1]));
+    SmartDashboard.putBoolean("shoulder in Position?",
+                              isShoulderAtPosition(angles[0]));
+    SmartDashboard.putBoolean("elbow in Position?",
+                              isElbowAtPosition(angles[1]));
     return isShoulderAtPosition(angles[0]) & isElbowAtPosition(angles[1]);
   }
 
-  public boolean getElbowIndexSensor() {
-    return !ElbowIndexSensor.get();
-  }
+  public boolean getElbowIndexSensor() { return !ElbowIndexSensor.get(); }
 
-  public boolean getShoulderIndexSensor() {
-    return !ShoulderIndexSensor.get();
-  }
+  public boolean getShoulderIndexSensor() { return !ShoulderIndexSensor.get(); }
 
   public double[] getJointAngles() {
     double[] angles = new double[2];
     angles[0] =
-        countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(), SC.Shoulder.GearRatio);
-    angles[1] = countsToAngle(elbowMotor.getSelectedSensorPosition(), SC.Elbow.GearRatio);
+        countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(),
+                      SC.Shoulder.GearRatio);
+    angles[1] = countsToAngle(elbowMotor.getSelectedSensorPosition(),
+                              SC.Elbow.GearRatio);
     return angles;
   }
 
-  public States getState() {
-    return this.state;
-  }
+  public States getState() { return this.state; }
 
   /////////////////////////////// End Getters ///////////////////////////////
 
@@ -193,10 +172,11 @@ public class Superstructure extends SubsystemBase {
 
     SmartDashboard.putNumber(
         "Shoulder Postion",
-        countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
+        countsToAngle(shoulderMotor_starboard.getSelectedSensorPosition(),
+                      SC.Shoulder.GearRatio));
     SmartDashboard.putNumber(
-        "Elbow Postion",
-        countsToAngle(elbowMotor.getSelectedSensorPosition(), SC.Shoulder.GearRatio));
+        "Elbow Postion", countsToAngle(elbowMotor.getSelectedSensorPosition(),
+                                       SC.Shoulder.GearRatio));
 
     SmartDashboard.putBoolean("Shoulder Index", getShoulderIndexSensor());
     SmartDashboard.putBoolean("Elbow Index", getElbowIndexSensor());

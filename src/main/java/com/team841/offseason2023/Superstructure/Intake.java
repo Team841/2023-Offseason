@@ -28,7 +28,8 @@ public class Intake extends SubsystemBase {
   public Intake() {
 
     IntakeMotor.configFactoryDefault();
-    IntakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
+    IntakeMotor.configSupplyCurrentLimit(
+        new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
     IntakeMotor.setNeutralMode(NeutralMode.Brake);
   }
 
@@ -69,19 +70,18 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (this.timer >= 0.0){
+    if (this.timer >= 0.0) {
       timer += 1.0;
 
-      if (timer >= 20.0){
+      if (timer >= 20.0) {
         notTransition = true;
         timer = Double.NaN;
         return;
       }
     }
 
-    if (SC.superstructureState == States.Ground
-        && notTransition
-        && IntakeMotor.getSupplyCurrent() > thresh) {
+    if (SC.superstructureState == States.Ground && notTransition &&
+        IntakeMotor.getSupplyCurrent() > thresh) {
       factory.moveHome().schedule();
     }
   }
@@ -91,7 +91,8 @@ public class Intake extends SubsystemBase {
     if (IntakeMotor.getSupplyCurrent() < thresh) {
       return GamePiece.Empty;
     } else {
-      return this.thresh == SC.Intake.CubeCThresh ? GamePiece.Cube : GamePiece.Cone;
+      return this.thresh == SC.Intake.CubeCThresh ? GamePiece.Cube
+                                                  : GamePiece.Cone;
     }
   }
 }

@@ -17,7 +17,8 @@ public class SuperstructureStateManager {
     try {
       this.presets.add(preset);
     } catch (Exception e) {
-      System.out.println("Error adding preset to SuperstructureStateManager. Returning false.");
+      System.out.println(
+          "Error adding preset to SuperstructureStateManager. Returning false.");
     }
   }
 
@@ -37,7 +38,8 @@ public class SuperstructureStateManager {
     } else if (possibleStates.isEmpty()) {
       SC.superstructureState = States.Nothing;
     } else {
-      System.out.println("Multiple states found for current position. Returning false.");
+      System.out.println(
+          "Multiple states found for current position. Returning false.");
       SC.superstructureState = States.Nothing;
     }
   }
