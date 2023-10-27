@@ -69,10 +69,10 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (this.timer >= 0.0){
+    if (this.timer >= 0.0) {
       timer += 1.0;
 
-      if (timer >= 20.0){
+      if (timer >= 20.0) {
         notTransition = true;
         timer = Double.NaN;
         return;
