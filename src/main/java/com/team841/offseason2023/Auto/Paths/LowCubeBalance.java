@@ -9,12 +9,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class LowCubeBalance extends SequentialCommandGroup {
 
   public LowCubeBalance(Drivetrain aDrivetrain, Intake aIntake) {
-    addCommands(
-        aIntake.ThrowCube().withTimeout(2),
-        new AutoDriveToDistance(aDrivetrain, -15),
-        new AutoDriveToDistance(aDrivetrain, -15),
-        new AutoDriveToDistance(aDrivetrain, -20),
-        new AutoDriveToDistance(aDrivetrain, -55),
-        new AutoBalance(aDrivetrain));
+    addCommands(aIntake.ThrowCube().withTimeout(2),
+                new AutoDriveToDistance(aDrivetrain, -15),
+                new AutoDriveToDistance(aDrivetrain, -15),
+                new AutoDriveToDistance(aDrivetrain, -20),
+                new AutoDriveToDistance(aDrivetrain, -55),
+                new AutoBalance(aDrivetrain));
   }
 }

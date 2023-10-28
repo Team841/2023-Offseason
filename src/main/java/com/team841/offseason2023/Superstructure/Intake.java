@@ -28,7 +28,8 @@ public class Intake extends SubsystemBase {
   public Intake() {
 
     IntakeMotor.configFactoryDefault();
-    IntakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
+    IntakeMotor.configSupplyCurrentLimit(
+        new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
     IntakeMotor.setNeutralMode(NeutralMode.Brake);
   }
 
@@ -104,9 +105,8 @@ public class Intake extends SubsystemBase {
       }
     }
 
-    if (SC.superstructureState == States.Ground
-        && notTransition
-        && IntakeMotor.getSupplyCurrent() > thresh) {
+    if (SC.superstructureState == States.Ground && notTransition &&
+        IntakeMotor.getSupplyCurrent() > thresh) {
       factory.moveHome().schedule();
     }
   }
@@ -116,35 +116,48 @@ public class Intake extends SubsystemBase {
     if (IntakeMotor.getSupplyCurrent() < thresh) {
       return GamePiece.Empty;
     } else {
-      return this.thresh == SC.Intake.CubeCThresh ? GamePiece.Cube : GamePiece.Cone;
+      return this.thresh == SC.Intake.CubeCThresh ? GamePiece.Cube
+                                                  : GamePiece.Cone;
     }
   }
 
   public CommandBase IntakeCube() {
     return new InstantCommand(
-            () -> this.IntakeMotor.set(ControlMode.PercentOutput, -SC.Intake.teleopPower))
+               ()
+                   -> this.IntakeMotor.set(ControlMode.PercentOutput,
+                                           -SC.Intake.teleopPower))
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
-        .handleInterrupt(() -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
+        .handleInterrupt(
+            () -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
   }
 
   public CommandBase ThrowCube() {
     return new InstantCommand(
-            () -> this.IntakeMotor.set(ControlMode.PercentOutput, SC.Intake.teleopPower))
+               ()
+                   -> this.IntakeMotor.set(ControlMode.PercentOutput,
+                                           SC.Intake.teleopPower))
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
-        .handleInterrupt(() -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
+        .handleInterrupt(
+            () -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
   }
 
   public CommandBase IntakeCone() {
     return new InstantCommand(
-            () -> this.IntakeMotor.set(ControlMode.PercentOutput, SC.Intake.teleopPower))
+               ()
+                   -> this.IntakeMotor.set(ControlMode.PercentOutput,
+                                           SC.Intake.teleopPower))
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
-        .handleInterrupt(() -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
+        .handleInterrupt(
+            () -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
   }
 
   public CommandBase ThrowCone() {
     return new InstantCommand(
-            () -> this.IntakeMotor.set(ControlMode.PercentOutput, -SC.Intake.teleopPower))
+               ()
+                   -> this.IntakeMotor.set(ControlMode.PercentOutput,
+                                           -SC.Intake.teleopPower))
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf)
-        .handleInterrupt(() -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
+        .handleInterrupt(
+            () -> this.IntakeMotor.set(ControlMode.PercentOutput, 0));
   }
 }

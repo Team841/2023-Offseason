@@ -7,9 +7,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class scoreLowCube extends SequentialCommandGroup {
 
   public scoreLowCube(Intake aIntake) {
-    addCommands(
-        new InstantCommand(aIntake::ThrowCube, aIntake).withTimeout(3)
-        // new AutoDriveToDistance(p_Drivetrain, -10)
-        );
+    addCommands(new InstantCommand(aIntake::ThrowCube, aIntake).withTimeout(3)
+                // new AutoDriveToDistance(p_Drivetrain, -10)
+    );
   }
 }

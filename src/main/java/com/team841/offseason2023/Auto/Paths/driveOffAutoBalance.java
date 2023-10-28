@@ -11,12 +11,11 @@ public class driveOffAutoBalance extends SequentialCommandGroup {
   public driveOffAutoBalance(Drivetrain a_Drivetrain) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-        new AutoDriveToDistance(a_Drivetrain, 60),
-        new AutoTurn(a_Drivetrain, 270),
-        new AutoDriveToDistance(a_Drivetrain, 48),
-        new AutoTurn(a_Drivetrain, 270),
-        new AutoDriveToDistance(a_Drivetrain, 72),
-        new AutoBalance(a_Drivetrain));
+    addCommands(new AutoDriveToDistance(a_Drivetrain, 60),
+                new AutoTurn(a_Drivetrain, 270),
+                new AutoDriveToDistance(a_Drivetrain, 48),
+                new AutoTurn(a_Drivetrain, 270),
+                new AutoDriveToDistance(a_Drivetrain, 72),
+                new AutoBalance(a_Drivetrain));
   }
 }
