@@ -1,22 +1,26 @@
-package frc.robot.commands.autonomous.Paths;
-import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
+package com.team841.offseason2023.Auto.Paths;
+
+import com.team841.offseason2023.Auto.PIDControllers.AutoDriveToDistance;
+import com.team841.offseason2023.Auto.PIDControllers.AutoTurn;
+import com.team841.offseason2023.Constants.SubsystemManifest;
+import com.team841.offseason2023.Drive.Drivetrain;
+import com.team841.offseason2023.Superstructure.Intake;
+import com.team841.offseason2023.Superstructure.factory.SuperstructureFactoryBeta;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.*;
-import frc.robot.commands.autonomous.PIDControllers.*;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Superstructure;
 
 public class scoreGetAnother extends SequentialCommandGroup {
-  public scoreGetAnother(Superstructure aSuperstructure,
-                         Drivetrain aDrivetrain) {
+
+  private final SuperstructureFactoryBeta factory = SubsystemManifest.factory;
+
+  public scoreGetAnother(Drivetrain aDrivetrain, Intake aIntake) {
     addCommands(
         // 1. move arm high position
-        new SetJointsToHighScoreCube(aSuperstructure).withTimeout(2),
+        factory.moveHighScoreCube().withTimeout(2),
         // 2. spit out
-        new SpitOutCube(aSuperstructure).withTimeout(1.5),
+        aIntake.ThrowCube().withTimeout(1.5),
         // 3. bring arm to home
-        new SetJointsToHome(aSuperstructure).withTimeout(2),
+        factory.moveHome().withTimeout(2),
         // 4. drive back 11ft to pick up cube
 
         new AutoDriveToDistance(aDrivetrain, -1),
@@ -25,16 +29,17 @@ public class scoreGetAnother extends SequentialCommandGroup {
         new AutoDriveToDistance(aDrivetrain, -50),
         new AutoDriveToDistance(aDrivetrain, -30),
         new AutoDriveToDistance(aDrivetrain, -10),
+
         // 5. turn 180
         new AutoTurn(aDrivetrain, 179).withTimeout(2),
         // 6. turn on intake
-        new InstantCommand(() -> aSuperstructure.IntakeCube(), aSuperstructure),
+        new InstantCommand(aIntake::toggleIntakeIn, aIntake),
         // 7. set to ground
-        new SetJointsToGroundPickup(aSuperstructure).withTimeout(2),
+        factory.moveGround().withTimeout(2),
         // stop intake motors
-        new InstantCommand(() -> aSuperstructure.stopMotor(), aSuperstructure),
+        new InstantCommand(aIntake::stopMotor, aIntake),
         // bring arm home
-        new SetJointsToHome(aSuperstructure).withTimeout(2),
+        factory.moveHome().withTimeout(2),
         // turn 180
         new AutoTurn(aDrivetrain, 180).withTimeout(2),
         // drive back
@@ -42,9 +47,7 @@ public class scoreGetAnother extends SequentialCommandGroup {
         new AutoDriveToDistance(aDrivetrain, 50),
         new AutoDriveToDistance(aDrivetrain, 30),
         // spit out cube
-        new SpitOutCube(aSuperstructure).withTimeout(1.5),
-        new SetJointsToHome(aSuperstructure).withTimeout(2)
-
-    );
+        new InstantCommand(aIntake::ThrowCube, aIntake).withTimeout(1.5),
+        factory.moveHome().withTimeout(2));
   }
 }
