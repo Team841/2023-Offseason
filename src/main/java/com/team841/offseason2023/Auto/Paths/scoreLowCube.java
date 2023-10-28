@@ -9,17 +9,17 @@ import frc.robot.commands.autonomous.coneOutTake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
+// NOTE:  Consider using this command inline, rather than writing a subclass.
+// For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class scoreLowCube extends SequentialCommandGroup {
   /** Creates a new driveoff. */
-  public scoreLowCube(Drivetrain p_Drivetrain, Superstructure p_Superstructure) {
+  public scoreLowCube(Drivetrain p_Drivetrain,
+                      Superstructure p_Superstructure) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new coneOutTake(p_Superstructure).withTimeout(3)
-      // new AutoDriveToDistance(p_Drivetrain, -10)
+    addCommands(new coneOutTake(p_Superstructure).withTimeout(3)
+                // new AutoDriveToDistance(p_Drivetrain, -10)
     );
   }
 }

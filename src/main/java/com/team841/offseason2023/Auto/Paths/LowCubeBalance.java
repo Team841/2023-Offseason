@@ -9,17 +9,16 @@ import frc.robot.subsystems.Superstructure;
 
 public class LowCubeBalance extends SequentialCommandGroup {
 
-    public LowCubeBalance(Superstructure p_Superstructure, Drivetrain aDrivetrain) {
-        addCommands(
-                new coneOutTake(p_Superstructure).withTimeout(2),
+  public LowCubeBalance(Superstructure p_Superstructure,
+                        Drivetrain aDrivetrain) {
+    addCommands(new coneOutTake(p_Superstructure).withTimeout(2),
                 new AutoDriveToDistance(aDrivetrain, -15),
                 new AutoDriveToDistance(aDrivetrain, -15),
                 new AutoDriveToDistance(aDrivetrain, -20),
                 new AutoDriveToDistance(aDrivetrain, -55),
 
-
                 new AutoBalance(aDrivetrain)
 
-        );
-    }
+    );
+  }
 }

@@ -8,12 +8,10 @@ import frc.robot.subsystems.Superstructure;
 
 public class scoreHighCone extends SequentialCommandGroup {
 
-    //todo: test this code
-    public scoreHighCone(Superstructure superstructure) {
-        addCommands(
-                new SetJointsToHighScoreCone(superstructure).withTimeout(2),
+  // todo: test this code
+  public scoreHighCone(Superstructure superstructure) {
+    addCommands(new SetJointsToHighScoreCone(superstructure).withTimeout(2),
                 new SpitOutCone(superstructure).withTimeout(1.5),
-                new SetJointsToHome(superstructure)
-        );
-    }
+                new SetJointsToHome(superstructure));
+  }
 }

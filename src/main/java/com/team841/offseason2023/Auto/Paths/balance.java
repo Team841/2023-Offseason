@@ -7,15 +7,12 @@ import frc.robot.subsystems.Drivetrain;
 
 public class balance extends SequentialCommandGroup {
 
-    public balance(Drivetrain aDrivetrain){
-        addCommands(
-                new AutoDriveToDistance(aDrivetrain, -15),
+  public balance(Drivetrain aDrivetrain) {
+    addCommands(new AutoDriveToDistance(aDrivetrain, -15),
                 new AutoDriveToDistance(aDrivetrain, -15),
                 new AutoDriveToDistance(aDrivetrain, -20),
                 new AutoDriveToDistance(aDrivetrain, -55),
 
-
-                new AutoBalance(aDrivetrain)
-        );
-    }
+                new AutoBalance(aDrivetrain));
+  }
 }
