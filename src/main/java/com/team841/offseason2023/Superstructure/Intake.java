@@ -9,6 +9,7 @@ import com.team841.offseason2023.Constants.SC;
 import com.team841.offseason2023.Constants.SubsystemManifest;
 import com.team841.offseason2023.Superstructure.factory.SuperstructureFactoryBeta;
 import com.team841.offseason2023.states.States;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 
 public class Intake extends SubsystemBase {
@@ -109,6 +110,8 @@ public class Intake extends SubsystemBase {
         && IntakeMotor.getSupplyCurrent() > thresh) {
       factory.moveHome().schedule();
     }
+
+    SmartDashboard.putBoolean("Intake spinning", this.IntakeMotor.getMotorOutputPercent() != 0);
   }
 
   public GamePiece pickedUp() {

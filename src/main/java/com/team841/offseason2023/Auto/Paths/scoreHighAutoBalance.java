@@ -20,7 +20,7 @@ public class scoreHighAutoBalance extends SequentialCommandGroup {
 
         // new InstantCommand(() -> cSuperstructure.stopMotor(), cSuperstructure),
         factory.moveHighScoreCone().withTimeout(2),
-        new InstantCommand(aIntake::ThrowCone, aIntake).withTimeout(1.5),
+        aIntake.ThrowCone().withTimeout(1.5),
         factory.moveHome(),
         new AutoDriveToDistance(aDrivetrain, -15),
         new AutoDriveToDistance(aDrivetrain, -15),

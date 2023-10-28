@@ -47,7 +47,7 @@ public class scoreGetAnother extends SequentialCommandGroup {
         new AutoDriveToDistance(aDrivetrain, 50),
         new AutoDriveToDistance(aDrivetrain, 30),
         // spit out cube
-        new InstantCommand(aIntake::ThrowCube, aIntake).withTimeout(1.5),
+        aIntake.ThrowCube().withTimeout(1.5),
         factory.moveHome().withTimeout(2));
   }
 }

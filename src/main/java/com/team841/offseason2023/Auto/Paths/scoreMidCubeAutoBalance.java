@@ -16,12 +16,12 @@ public class scoreMidCubeAutoBalance extends SequentialCommandGroup {
   public scoreMidCubeAutoBalance(Drivetrain aDrivetrain, Intake aIntake) {
 
     addCommands(
-        new InstantCommand(aIntake::IntakeCube, aIntake).withTimeout(0.2),
-
-        // new InstantCommand(() -> cSuperstructure.stopMotor(), cSuperstructure),
-        factory.moveMidScoreCube().withTimeout(2),
-        new InstantCommand(aIntake::ThrowCube).withTimeout(1.5),
+        aIntake.IntakeCube().withTimeout(0.1),
+        new InstantCommand(aIntake::stopMotor, aIntake).withTimeout(0.2),
+        factory.moveMidScoreCube(),
+        aIntake.ThrowCube().withTimeout(2),
         factory.moveHome(),
+        new InstantCommand(aIntake::stopMotor, aIntake).withTimeout(0.2),
         new AutoDriveToDistance(aDrivetrain, -15),
         new AutoDriveToDistance(aDrivetrain, -15),
         new AutoDriveToDistance(aDrivetrain, -20),
