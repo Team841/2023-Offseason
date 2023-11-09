@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import edu.wpi.first.cameraserver.CameraServer;
 public class RobotContainer {
 
   private final Drivetrain drivetrain = SubsystemManifest.drivetrain;
@@ -50,6 +50,8 @@ public class RobotContainer {
   private final Trigger cubeIntakeToggle = m_codriverCtrl.a();
 
   public RobotContainer() {
+
+    CameraServer.startAutomaticCapture();
 
     configureBindings();
     drivetrain.setDefaultCommand(
